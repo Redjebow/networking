@@ -41,8 +41,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">>
-                    <a class="nav-link dropdown-toggle" href="#" role="button"  aria-expanded="false">
+                <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" href="#" role="button"  aria-expanded="false">
                         Friend Requests
                     </a>
                 </li>
@@ -56,6 +56,11 @@
                 <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item dropdown">
                     <a class="nav-link" href="/login" role="button"  aria-expanded="false">
                         Login
+                    </a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" href="/profile" role="button"  aria-expanded="false">
+                        Profile
                     </a>
                 </li>
             </ul>

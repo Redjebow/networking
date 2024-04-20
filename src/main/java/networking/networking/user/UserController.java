@@ -2,6 +2,8 @@ package networking.networking.user;
 
 import jakarta.validation.Valid;
 import networking.networking.country.CountryRepository;
+import networking.networking.enums.SkillEnum;
+import networking.networking.event.Event;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,33 +30,21 @@ public class UserController {
     @GetMapping("/add")
     public String addUserUserRole(Model model) {
         model.addAttribute("user", new UserDTO());
+        model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("skills", SkillEnum.values());
         return "user-register";
     }
 
     @GetMapping("/all")
     public String getAllCommunityRoleUser(Model model) {
         model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("countries", countryRepository.findAll());
         return "all-users";
     }
 
-    @PostMapping("/submitUser")
-    public ModelAndView submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userDTO);
-            return new ModelAndView("user-register");
-        }
-        if (userService.cherForExistUserName(userDTO)) {
-            model.addAttribute("not_unique_name", "Username already exist");
-            model.addAttribute("user", userDTO);
-            return new ModelAndView("user-register");
-        }
-        if (!userDTO.getPassword().equals(userDTO.getRePassword())) {
-            model.addAttribute("PasswordDoNotMatch", "Password Do Not Match");
-            model.addAttribute("user", userDTO);
-            return new ModelAndView("user-register");
-        }
-
-        return new ModelAndView("result");
+    @PostMapping("/add")
+    public String submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model) {
+        return userService.saveUser(userDTO, bindingResult, model);
     }
 
 

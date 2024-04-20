@@ -26,10 +26,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
+
+                        .requestMatchers("/", "/index", "/events/**","/users/**", "/login" , "/register", "/activities/show").permitAll()
+                        .anyRequest().authenticated()
                         .anyRequest().permitAll()
-//                        .requestMatchers("/", "/home", "/events/**", "/login" , "/register", "/activities/show").permitAll()
-//                        .requestMatchers("/users/all-communityUsers").hasAuthority("ROLE_ADMIN")
-//                        .anyRequest().authenticated()
+
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")

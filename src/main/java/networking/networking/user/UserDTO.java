@@ -9,8 +9,11 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import networking.networking.country.Country;
+import networking.networking.education.Education;
 import networking.networking.skill.Skill;
+import networking.networking.workExperience.WorkExperience;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter

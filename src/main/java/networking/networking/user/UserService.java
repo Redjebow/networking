@@ -1,5 +1,6 @@
 package networking.networking.user;
 
+import networking.networking.exceptions.UserNotFoundException;
 import networking.networking.country.CountryRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.event.Event;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -69,6 +71,12 @@ public class UserService {
             }
         }
         return false;
+    }
 
+    public void validateUserExist(Long userId) {
+        Optional <User> optionalUser = userRepository.findById(userId);
+        if( optionalUser.isEmpty()) {
+            throw new UserNotFoundException(userId);
+        }
     }
 }

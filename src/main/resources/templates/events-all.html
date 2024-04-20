@@ -38,10 +38,8 @@
                         <span th:text="${#temporals.format(eventDateTime, 'HH:mm')}"></span>
                     </div>
                 </td>
-                <td>
-                    <input type="hidden" name="id" th:value="${event.id}"/>
-                    <a th:href="@{'/events/show/' + ${event.id}}" class="btn btn-primary">Show more</a>
-                </td>
+                <td><a th:href="@{'/events/' + ${event.id} + '/events'}">
+                    <button type="submit" class="btn btn-success">Show more</button></a></td>
             </tr>
             </tbody>
         </table>

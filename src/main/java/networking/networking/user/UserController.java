@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -95,7 +96,7 @@ public class UserController {
         return "profile";
     }
     @GetMapping("/bySkill")
-    public String getFilmsByGenre(@RequestParam("skill") Long id, Model model){
+    public String getFilmsByGenre(@RequestParam("skill") List<Long> id, Model model){
         model.addAttribute("skills",skillRepository.findAll());
         model.addAttribute("users", userService.getSortedList(id));
         return "sorted-users";

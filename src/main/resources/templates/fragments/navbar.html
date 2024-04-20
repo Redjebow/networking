@@ -46,6 +46,11 @@
                         Friend Requests
                     </a>
                 </li>
+                <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" th:href="@{/users/all}" role="button"  aria-expanded="false">
+                        Find new friends
+                    </a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 <form class="d-flex" role="search" th:action="@{/products/search}">

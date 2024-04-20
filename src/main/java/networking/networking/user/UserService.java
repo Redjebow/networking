@@ -5,15 +5,18 @@ import networking.networking.education.Education;
 import networking.networking.education.EducationRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.exceptions.UserNotFoundException;
+import networking.networking.skill.Skill;
+import networking.networking.skill.SkillRepository;
 import networking.networking.workExperience.WorkExperience;
 import networking.networking.workExperience.WorkExperienceRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -23,16 +26,19 @@ public class UserService {
     private UserMapper userMapper;
     private final WorkExperienceRepository workExperienceRepository;
     private final EducationRepository educationRepository;
+    private final SkillRepository skillRepository;
 
     public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserMapper userMapper, CountryRepository countryRepository,
                        WorkExperienceRepository workExperienceRepository,
-                       EducationRepository educationRepository) {
+                       EducationRepository educationRepository,
+                       SkillRepository skillRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.countryRepository = countryRepository;
         this.workExperienceRepository = workExperienceRepository;
         this.educationRepository = educationRepository;
+        this.skillRepository = skillRepository;
     }
 
     public UserDTO makeCryptedPassword(UserDTO userDTO) {
@@ -105,5 +111,47 @@ public class UserService {
         if (optionalUser.isEmpty()) {
             throw new UserNotFoundException(userId);
         }
+    }
+
+    private List<User> getAllUsersExceptCurrent(User currentuser){
+        List<User> allUsers = (List<User>) userRepository.findAll();
+        allUsers.remove(currentuser);
+        return allUsers;
+    }
+
+    public String showAllUsersSortedByInterests(Model model, Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        List<User> allUsersExceptCurrent = getAllUsersExceptCurrent(currentUser);
+
+        List<User> sortedUsersByCurrentUserInterests = sortUsersByInterest(currentUser, allUsersExceptCurrent);
+
+        model.addAttribute("users", sortedUsersByCurrentUserInterests);
+        model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
+        return "all-users";
+    }
+
+    public List<User> sortUsersByInterest(User currentUser, List<User> allUsers) {
+        Set<Skill> currentUserInterests = currentUser.getInterests();
+        Map<User, Integer> userSkillsMatches = new HashMap<>();
+        for (User user : allUsers) {
+            int matches = countMatches(currentUserInterests, user.getSkills());
+            userSkillsMatches.put(user, matches);
+
+        }
+        List<User> sortedUsers = userSkillsMatches.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return sortedUsers;
+
+    }
+
+    private int countMatches(Set<Skill> interests, Set<Skill> skills) {
+        return (int) skills.stream()
+                .filter(interests::contains)
+                .count();
     }
 }

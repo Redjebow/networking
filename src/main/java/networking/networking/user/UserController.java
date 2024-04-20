@@ -4,12 +4,16 @@ import jakarta.validation.Valid;
 import networking.networking.country.CountryRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.event.Event;
+import networking.networking.skill.Skill;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/users")
@@ -28,7 +32,7 @@ public class UserController {
 
 
     @GetMapping("/add")
-    public String addUserUserRole(Model model) {
+    public String registerNewUser(Model model) {
         model.addAttribute("userDTO", new UserDTO());
         model.addAttribute("countries", countryRepository.findAll());
         model.addAttribute("skills", SkillEnum.values());
@@ -36,10 +40,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public String registerNewUser(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("countries", countryRepository.findAll());
-        return "all-users";
+    public String showAllUsers(Model model, Authentication authentication) {
+        return userService.showAllUsersSortedByInterests(model, authentication);
     }
 
     @PostMapping("/add")

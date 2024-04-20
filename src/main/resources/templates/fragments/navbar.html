@@ -68,8 +68,12 @@
                     <li>
 
                         <a th:class="nav-link" th:href="@{/users/profile}">
-                        <span th:inline="text" class="fas fa-user-check text-primary-emphasis">You are signed in as: <span
-                                th:text="${#authentication.getPrincipal().getFirstName()}"></span></span></a>
+                        <span th:inline="text" class="fas fa-user-check text-primary-emphasis">Hello:
+                            <span
+                                th:text="${#authentication.getPrincipal().getFirstName()} + ' ' + ${#authentication.getPrincipal().getLastName()}">
+                            </span>
+                        </span>
+                        </a>
                     </li>
                     <li>
                         <form th:action="@{/logout}" method="post">

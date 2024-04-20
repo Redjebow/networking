@@ -56,6 +56,7 @@ public class DataInit implements ApplicationRunner {
         if (userRepository.count() == 0) {
             addUser1();
             addUser2();
+            addUser3();
         }
 
         if (eventRepository.count() == 0) {
@@ -215,6 +216,76 @@ public class DataInit implements ApplicationRunner {
 
         WorkExperience workExperience2 = WorkExperience.builder()
                 .companyName("Speedy - Razgrad")
+                .position("IT support")
+                .startDate(LocalDate.of(2023, 2, 1))
+                .endDate(LocalDate.of(2023, 8, 30))
+                .user(user)
+                .build();
+
+        workExperienceRepository.save(workExperience1);
+        workExperienceRepository.save(workExperience2);
+    }
+
+    private void addUser3() {
+        CountryEnum bgEnum = CountryEnum.BULGARIA;
+        Country BG = Country.builder().id(bgEnum.getId()).name(bgEnum.getLabel()).build();
+
+        List<SkillEnum> skillEnumList = List.of(SkillEnum.RESTfulAPIs, SkillEnum.SQL, SkillEnum.MongoDB);
+        Set<Skill> skills = getSkillSet(skillEnumList);
+
+        List<SkillEnum> interestsEnumList = List.of(SkillEnum.Java, SkillEnum.Python, SkillEnum.JavaScript, SkillEnum.HTML);
+        Set<Skill> interests = getSkillSet(interestsEnumList);
+
+        User user = User.builder()
+                .username("user3")
+                .password(bCryptPasswordEncoder.encode("123"))
+                .role("ROLE_USER")
+                .email("user3@abv.bg")
+                .firstName("Test")
+                .lastName("User3")
+                .phoneNumber("0888123126")
+                .country(BG)
+                .city("Ruse")
+                .skills(skills)
+                .interests(interests)
+                .profilePicturePath("user3.jpeg")
+                .build();
+        userRepository.save(user);
+
+        Education education1 = Education.builder()
+                .schoolName("Ikonomov - Razgrad")
+                .startDate(LocalDate.of(2010, 9, 15))
+                .endDate(LocalDate.of(2015, 6, 1))
+                .user(user)
+                .build();
+        educationRepository.save(education1);
+
+        Education education2 = Education.builder()
+                .schoolName("Mehano - Ruse")
+                .startDate(LocalDate.of(2015, 9, 15))
+                .endDate(LocalDate.of(2019, 6, 1))
+                .user(user)
+                .build();
+        educationRepository.save(education2);
+
+        Education education3 = Education.builder()
+                .schoolName("Ruse University")
+                .startDate(LocalDate.of(2019, 9, 15))
+                .endDate(LocalDate.of(2020, 1, 1))
+                .user(user)
+                .build();
+        educationRepository.save(education3);
+
+        WorkExperience workExperience1 = WorkExperience.builder()
+                .companyName("Shell")
+                .position("Cashier")
+                .startDate(LocalDate.of(2020, 10, 1))
+                .endDate(LocalDate.of(2022, 12, 15))
+                .user(user)
+                .build();
+
+        WorkExperience workExperience2 = WorkExperience.builder()
+                .companyName("Econt - Ruse")
                 .position("IT support")
                 .startDate(LocalDate.of(2023, 2, 1))
                 .endDate(LocalDate.of(2023, 8, 30))

@@ -82,7 +82,8 @@ public class UserService {
 //        user.getWorkExperiences().add(workExperience);
 //        user.getEducations().add(education);
 
-        return "result";
+//        return "index";
+        return "redirect:/index";
     }
 
     public void deleteUser(Long id) {

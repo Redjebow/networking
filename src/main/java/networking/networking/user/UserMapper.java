@@ -20,24 +20,6 @@ public class UserMapper {
         user.setSkills(userDTO.getSkills());
         user.setInterests(userDTO.getInterest());
         user.setDescription(userDTO.getDescription());
-
-        WorkExperience workExperience = new WorkExperience();
-        workExperience.setCompanyName(userDTO.getCompanyName());
-        workExperience.setStartDate(userDTO.getStartDateWork());
-        workExperience.setEndDate(userDTO.getEndDateWork());
-        workExperience.setUser(user);
-
-        Education education = new Education();
-        education.setSchoolName(userDTO.getSchoolName());
-        education.setStartDate(userDTO.getStartDate());
-        education.setEndDate(userDTO.getEndDate());
-        education.setUser(user);
-
-        user.getWorkExperiences().add(workExperience);
-        user.getEducations().add(education);
-
-
-
         return user;
     }
 }

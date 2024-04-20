@@ -120,6 +120,7 @@ public class DataInit implements ApplicationRunner {
                 .city("Razgrad")
                 .skills(skills)
                 .interests(interests)
+                .profilePicturePath("user.jpeg")
                 .build();
         userRepository.save(user);
 
@@ -181,6 +182,7 @@ public class DataInit implements ApplicationRunner {
                 .city("Razgrad")
                 .skills(skills)
                 .interests(interests)
+                .profilePicturePath("user2.jpeg")
                 .build();
         userRepository.save(user);
 

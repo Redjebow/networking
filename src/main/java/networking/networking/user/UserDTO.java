@@ -61,4 +61,6 @@ public class UserDTO {
     private LocalDate startDateWork;
     private LocalDate endDateWork;
     private String position;
+    private String profilePicturePath;
+
 }

@@ -3,17 +3,17 @@ package networking.networking.user;
 import jakarta.validation.Valid;
 import networking.networking.country.CountryRepository;
 import networking.networking.enums.SkillEnum;
-import networking.networking.event.Event;
-import networking.networking.skill.Skill;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/users")
@@ -30,6 +30,11 @@ public class UserController {
         this.countryRepository = countryRepository;
     }
 
+    @PostMapping("/upload")
+    @ResponseBody
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+        return userService.uploadImage(file);
+    }
 
     @GetMapping("/add")
     public String registerNewUser(Model model) {
@@ -45,8 +50,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model) {
-        return userService.saveUser(userDTO, bindingResult, model);
+    public String submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        return userService.saveUser(userDTO, bindingResult, model, redirectAttributes);
     }
 
 

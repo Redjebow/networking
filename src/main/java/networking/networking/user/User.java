@@ -33,6 +33,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
@@ -41,10 +42,10 @@ public class User {
     private String city;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Education> educations;
+    private Set<Education> educations;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<WorkExperience> workExperiences;
+    private Set<WorkExperience> workExperiences;
 
     @ManyToMany
     private Set<Skill> skills;

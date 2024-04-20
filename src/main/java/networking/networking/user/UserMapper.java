@@ -1,5 +1,7 @@
 package networking.networking.user;
 
+import networking.networking.education.Education;
+import networking.networking.workExperience.WorkExperience;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +19,7 @@ public class UserMapper {
         user.setCity(userDTO.getCity());
         user.setSkills(userDTO.getSkills());
         user.setInterests(userDTO.getInterest());
+        user.setDescription(userDTO.getDescription());
         return user;
     }
 }

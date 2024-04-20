@@ -1,5 +1,6 @@
 package networking.networking.user;
 
+import lombok.Getter;
 import networking.networking.country.Country;
 import networking.networking.skill.Skill;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,9 +11,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
+@Getter
 public class MyUserDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public MyUserDetails(User user) {
         this.user = user;

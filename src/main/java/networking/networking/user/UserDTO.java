@@ -1,8 +1,6 @@
 package networking.networking.user;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,6 +11,8 @@ import networking.networking.education.Education;
 import networking.networking.skill.Skill;
 import networking.networking.workExperience.WorkExperience;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,10 +42,23 @@ public class UserDTO {
     @NotNull
     private String city;
     @NotNull
+    @Size(max = 250)
+    private String description;
+    @NotNull
     @ManyToMany
     private Set<Skill> skills;
     @NotNull
     @ManyToMany
     private Set<Skill> interest;
+
+    private String schoolName;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String companyName;
+    private LocalDate startDateWork;
+    private LocalDate endDateWork;
+    private Set<Education>educations = new HashSet<>();
+    private Set<WorkExperience>workExperiences = new HashSet<>();
+
 
 }

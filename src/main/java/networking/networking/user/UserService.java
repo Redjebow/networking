@@ -1,10 +1,12 @@
 package networking.networking.user;
 
 import jakarta.validation.Valid;
+import networking.networking.education.Education;
 import networking.networking.exceptions.UserNotFoundException;
 import networking.networking.country.CountryRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.event.Event;
+import networking.networking.workExperience.WorkExperience;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -55,9 +57,9 @@ public class UserService {
             model.addAttribute("skills", SkillEnum.values());
             return "user-register";
         }
-
         User user = userMapper.toEntity(makeCryptedPassword(userDTO));
         userRepository.save(user);
+
         return "result";
     }
 

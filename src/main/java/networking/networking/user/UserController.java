@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/add")
     public String addUserUserRole(Model model) {
-        model.addAttribute("user", new UserDTO());
+        model.addAttribute("userDTO", new UserDTO());
         model.addAttribute("countries", countryRepository.findAll());
         model.addAttribute("skills", SkillEnum.values());
         return "user-register";

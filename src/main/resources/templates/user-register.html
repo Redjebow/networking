@@ -13,8 +13,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="mb-4 text-center">Register</h2>
-            <form th:action="@{/users/add}" th:object="${user}" method="post">
+            <form th:action="@{/users/add}" th:object="${userDTO}" method="post">
                 <div class="form-group">
+                    <span class="text-danger" th:text="${not_unique_name != null} ? ${not_unique_name}"></span>
                     <label for="username">Username:</label>
                     <input type="text" th:field="*{username}" class="form-control" id="username"
                            placeholder="Enter your username">
@@ -22,13 +23,14 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="text" th:field="*{password}" class="form-control" id="password"
+                    <label class="text-danger" th:text="|${PasswordDoNotMatch}|"></label>
+                    <input type="password" th:field="*{password}" class="form-control" id="password"
                            placeholder="Enter password">
                     <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                 </div>
                 <div class="form-group">
                     <label for="rePassword">Retype Password:</label>
-                    <input type="text" th:field="*{rePassword}" class="form-control" id="rePassword"
+                    <input type="password" th:field="*{rePassword}" class="form-control" id="rePassword"
                            placeholder="Retype password">
                     <span class="text-danger" th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}"></span>
                 </div>

@@ -1,5 +1,6 @@
 package networking.networking.user;
 
+import jakarta.validation.Valid;
 import networking.networking.exceptions.UserNotFoundException;
 import networking.networking.country.CountryRepository;
 import networking.networking.enums.SkillEnum;
@@ -54,7 +55,8 @@ public class UserService {
             model.addAttribute("skills", SkillEnum.values());
             return "user-register";
         }
-        User user = userMapper.toEntity(userDTO);
+
+        User user = userMapper.toEntity(makeCryptedPassword(userDTO));
         userRepository.save(user);
         return "result";
     }

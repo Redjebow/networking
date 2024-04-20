@@ -117,21 +117,27 @@
                     <textarea th:field="*{description}" class="form-control" id="description"placeholder="Describe yourself in a few words"></textarea>
                     <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                 </div>
-                <div class="form-group">
-                    <label>Skills:</label>
-                    <div th:each="skill : ${skills}">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:id="${'skill_' + skill.id}" th:value="${skill.id}" th:field="*{skills}" />
-                            <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Skills:</label>
+                            <div th:each="skill : ${skills}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:id="${'skill_' + skill.id}" th:value="${skill.id}" th:field="*{skills}" />
+                                    <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Interest:</label>
-                    <div th:each="skill : ${skills}">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:id="${'skill_' + skill.id}" th:value="${skill.id}" th:field="*{interest}" />
-                            <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Interests:</label>
+                            <div th:each="skill : ${skills}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"  th:id="${'skill_' + skill.id}" th:value="${skill.id}" th:field="*{interest}" />
+                                    <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

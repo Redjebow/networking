@@ -113,7 +113,7 @@ public class UserService {
         }
     }
 
-    private List<User> getAllUsersExceptCurrent(User currentuser){
+    private List<User> getAllUsersExceptCurrent(User currentuser) {
         List<User> allUsers = (List<User>) userRepository.findAll();
         allUsers.remove(currentuser);
         return allUsers;
@@ -153,5 +153,18 @@ public class UserService {
         return (int) skills.stream()
                 .filter(interests::contains)
                 .count();
+    }
+    public List<User> getSortedList(Long id) {
+        List<User> sortedUsers = new ArrayList<>();
+        List<User> usersList = (List<User>) userRepository.findAll();
+        for (User user : usersList) {
+            for (Skill skill : user.getSkills()) {
+                if (skill.getId()==id) {
+                    sortedUsers.add(user);
+                    break; // Намерили сме съвпадение, прекратяваме цикъла за уменията на този потребител
+                }
+            }
+        }
+        return sortedUsers;
     }
 }

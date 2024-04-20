@@ -6,6 +6,7 @@ import networking.networking.education.EducationRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.event.Event;
 import networking.networking.skill.Skill;
+import networking.networking.skill.SkillRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,14 +25,17 @@ public class UserController {
     public UserRepository userRepository;
     public CountryRepository countryRepository;
     private final EducationRepository educationRepository;
+    private final SkillRepository skillRepository;
 
     public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository, CountryRepository countryRepository,
-                          EducationRepository educationRepository) {
+                          EducationRepository educationRepository,
+                          SkillRepository skillRepository) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.userRepository = userRepository;
         this.countryRepository = countryRepository;
         this.educationRepository = educationRepository;
+        this.skillRepository = skillRepository;
     }
 
 
@@ -82,5 +86,11 @@ public class UserController {
         User user = userRepository.getUserByUsername(userDetails.getUsername());
         model.addAttribute("user", user);
         return "profile";
+    }
+    @GetMapping("/bySkill")
+    public String getFilmsByGenre(@RequestParam("skill") Long id, Model model){
+        model.addAttribute("skills",skillRepository.findAll());
+        model.addAttribute("users", userService.getSortedList(id));
+        return "sorted-users";
     }
 }

@@ -2,6 +2,7 @@ package networking.networking.user;
 
 import jakarta.validation.Valid;
 import networking.networking.country.CountryRepository;
+import networking.networking.education.EducationRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.event.Event;
 import networking.networking.skill.Skill;
@@ -22,12 +23,15 @@ public class UserController {
     public UserMapper userMapper;
     public UserRepository userRepository;
     public CountryRepository countryRepository;
+    private final EducationRepository educationRepository;
 
-    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository, CountryRepository countryRepository) {
+    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository, CountryRepository countryRepository,
+                          EducationRepository educationRepository) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.userRepository = userRepository;
         this.countryRepository = countryRepository;
+        this.educationRepository = educationRepository;
     }
 
 
@@ -70,5 +74,13 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("country", countryRepository.findAll());
         return "editUser";
+    }
+
+    @GetMapping("/profile")
+    public String userProfile(Model model, Authentication authentication) {
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userRepository.getUserByUsername(userDetails.getUsername());
+        model.addAttribute("user", user);
+        return "profile";
     }
 }

@@ -32,12 +32,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 mt-2">
-                        <div class="display-6" style="font-size: 15px;">New to our site? Register <a
-                                th:href="@{/users/add}">here</a></div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <a href="/events/all" class="btn btn-warning btn-lg"> Check our Events here!</a>
                     </div>
                 </div>
+                <span th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <div class="row">
+                        <div class="col-md-12 mt-2">
+                            <div class="display-6" style="font-size: 15px;">New to our site? Register <a th:href="@{/users/add}">here</a></div>
+                        </div>
+                    </div>
+                </span>
             </div>
         </div>
     </div>

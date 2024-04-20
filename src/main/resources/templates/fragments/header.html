@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<nav class="navbar navbar-expand-lg  navbar-dark "
+     style="background: linear-gradient(to right, #ff6e7f, #bfe9ff);padding: 30px 0;"
+     xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/index" style="font-size: 30px;color: #ffffff; text-decoration: none; font-weight: bold;">
+                <i class="fas fa-tree"></i>
+                <i class="fas fa-city"></i>
+                <i class="fas fa-icons"></i>
+                <i class="fas fa-users"></i>
+                <span style="margin-left: 5px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">ActiveRazgrad
+                <span style="font-size: 18px; display: block;">Вашето място за забавление</span></span>
+            </a>
+        </div>
+        <ul class="nav nav-pills nav-fill justify-content-center mr-auto">
+            <li class="nav-item">
+
+                <a th:class="${#strings.equals(pageTitle,'index') ? 'nav-link active' : 'nav-link'}" href="/index">Начало</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link btn btn-link btn btn-link" href="/users/all">Потребители</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle font-weight-bold" data-bs-toggle="dropdown" href="#" role="button"
+                   aria-expanded="false">Организации</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/users/allCommunities">Всички</a></li>
+                    <li ><a class="dropdown-item" href="/users/addRoleCommunity">Регистрирай Организация</a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" href="/users/all-communityUsers">Списък на всички организации</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle font-weight-bold" data-bs-toggle="dropdown" href="#" role="button"
+                   aria-expanded="false">Събития</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/activity/list">Всички събития</a></li>
+                    <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_COMMUNITY'')')}" ><a class="dropdown-item" href="/activity/add">Добави събитие</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right d-flex align-items-center">
+            <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle font-weight-bold text-primary-emphasis"  href="#"
+                       id="registerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="fas fa-user"></span> Регистрация
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                        <li><a class="dropdown-item" href="/users/addRoleUser">За потребители</a></li>
+                        <li><a class="dropdown-item" href="/users/addRoleCommunity">За организации</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <form th:action="@{/login}" class="nav-link">
+                        <button type="submit" class="btn btn-link text-primary-emphasis" ><span
+                                class="fas fa-sign-in-alt"></span> Вход
+                        </button>
+                    </form>
+                </li>
+            </th:block>
+            <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                <li class="nav-item">
+                    <a th:class="nav-link" th:href="@{/user-profile}">
+                        <span th:inline="text" class="fas fa-user-check text-primary-emphasis"> Влезли сте като: <span
+                                th:text="${#authentication.getPrincipal().getFirstName()}"></span></span></a>
+                </li>
+                <li>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-link text-primary-emphasis" ><span
+                                class="fas fa-sign-out-alt"></span> Изход
+                        </button>
+                    </form>
+                </li>
+            </th:block>
+        </ul>
+
+    </div>
+</nav>

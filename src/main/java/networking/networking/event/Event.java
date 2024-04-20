@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import networking.networking.user.User;
 
 import javax.xml.crypto.Data;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,7 @@ public class Event {
     private Set<User>users;
     private String city;
     private String address;
-    private Data date;
+    private LocalDate date;
     private String topic;
 
     public Long getId() {
@@ -51,11 +52,11 @@ public class Event {
         this.address = address;
     }
 
-    public Data getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Data date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -1,5 +1,8 @@
 package networking.networking.user;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserMapper {
     public User toEntity(UserDTO userDTO){
         User user = new User();

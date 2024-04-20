@@ -1,4 +1,4 @@
-package networking.networking.event;
+package networking.networking.education;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,26 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import networking.networking.user.User;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.LocalDate;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "events")
-public class Event {
+@Table(name = "educations")
+public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToMany
-    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private String city;
-    private String address;
-    private LocalDateTime date;
-    private String topic;
-
+    private String schoolName;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

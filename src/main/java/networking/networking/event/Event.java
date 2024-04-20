@@ -28,4 +28,8 @@ public class Event {
     private LocalDateTime date;
     private String topic;
 
+    private String organizer;
+    private int duration; // hours
+    private String phoneNumber;
+    private int capacity; // TODO - use it with tickets or not?
 }

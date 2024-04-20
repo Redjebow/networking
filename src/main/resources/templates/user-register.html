@@ -11,6 +11,7 @@
         <div class="col-md-6">
             <h2 class="mb-4 text-center">Register</h2>
             <form th:action="@{/users/add}" th:object="${userDTO}" method="post">
+
                 <div class="form-group">
                     <span class="text-danger" th:text="${not_unique_name != null} ? ${not_unique_name}"></span>
                     <label for="username">Username:</label>
@@ -18,6 +19,24 @@
                            placeholder="Enter your username">
                     <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                 </div>
+
+                <div class="form-group mt-3 mb-3">
+                    <label>Upload Image</label>
+                    <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                    <div class="form-group">
+                        <input type="file" id="imageInput" name="image" accept="image/*" class="form-control-file">
+                    </div>
+                    <button type="button" id="uploadButton" class="btn btn-primary mt-3 mb-3">Upload image</button>
+                    <input type="hidden" id="imageFileName" th:field="*{profilePicturePath}" name="profilePicturePath">
+                    <img id="my_profile_img" th:if="${profilePicturePath == null}" src="/images/no_img.png" alt="No Image Available"
+                         class="img-thumbnail" style="max-width: 400px; max-height: 400px;"/>
+                    <img th:if="${profilePicturePath != null}" th:src="'/images/' + ${profilePicturePath}" alt="User profile picture"
+                         class="img-thumbnail" style="max-width: 400px; max-height: 400px;">
+                </div>
+                <span class="text-danger" th:if="${#fields.hasErrors('profilePicturePath')}"
+                      th:errors="*{profilePicturePath}">
+                </span>
+
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <label class="text-danger" th:text="|${PasswordDoNotMatch}|"></label>
@@ -65,7 +84,6 @@
                     <span class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
                 </div>
 
-
                 <hr>
 
                 <div class="form-group">
@@ -107,11 +125,6 @@
                     <span class="text-danger" th:if="${#fields.hasErrors('endDateWork')}" th:errors="*{endDateWork}"></span>
                 </div>
 
-
-
-
-
-
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <textarea th:field="*{description}" class="form-control" id="description"placeholder="Describe yourself in a few words"></textarea>
@@ -129,15 +142,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Interests:</label>
-                            <div th:each="skill : ${skills}">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox"  th:id="${'skill_' + skill.id}" th:value="${skill.id}" th:field="*{interest}" />
-                                    <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
-                                </div>
-                            </div>
+                </div>
+                <div class="form-group">
+                    <label>Interest:</label>
+                    <div th:each="skill : ${skills}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" th:id="${'interest_' + skill.id}" th:value="${skill.id}" th:field="*{interest}" />
+                            <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
+
                         </div>
                     </div>
                 </div>
@@ -148,9 +160,54 @@
         </div>
     </div>
 </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var profilePicturePath = /*[[*{userDTO.profilePicturePath}]]*/ null;
+        if (profilePicturePath) {
+            $('#my_profile_img').attr('src', '/images/' + profilePicturePath);
+        }
+
+        $('#uploadButton').click(function () {
+            var formData = new FormData();
+            var fileInput = document.getElementById('imageInput').files[0];
+            formData.append('image', fileInput);
+
+            var csrfToken = $("input[name='_csrf']").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/users/upload',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+                },
+                success: function(data) {
+                    var imgName = data.img_name;
+                    $('#imageFileName').val(imgName);
+                    $('#my_profile_img').attr('src', '/images/' + imgName);
+                    formData.append('imageFileName', imgName);
+                    formData.append('image', fileInput);
+                },
+                error: function (error) {
+                    console.log('Error uploading image: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 <div th:replace="~{fragments/footer.html}"></div>
 </html>

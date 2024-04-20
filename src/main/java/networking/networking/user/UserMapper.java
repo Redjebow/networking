@@ -20,6 +20,7 @@ public class UserMapper {
         user.setSkills(userDTO.getSkills());
         user.setInterests(userDTO.getInterest());
         user.setDescription(userDTO.getDescription());
+        user.setProfilePicturePath(userDTO.getProfilePicturePath());
         return user;
     }
 }

@@ -13,7 +13,7 @@
     <form action="#" th:action="@{/users/bySkill}" method="get">
         <table>
             <tr>
-                <td><select th:name="skill">
+                <td><select th:name="skill" multiple="multiple">
                     <option value="">Choice skill...</option>
                     <option th:each="skill : ${skills}"
                             th:value="${skill.id}"

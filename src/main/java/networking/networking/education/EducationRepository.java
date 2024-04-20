@@ -1,6 +1,6 @@
 package networking.networking.education;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EducationRepository extends JpaRepository<Education, Long> {
 }

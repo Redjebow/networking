@@ -51,14 +51,14 @@ public class UserDTO {
     @ManyToMany
     private Set<Skill> interest;
 
+    // SCHOOL
     private String schoolName;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    // WORK
     private String companyName;
     private LocalDate startDateWork;
     private LocalDate endDateWork;
-    private Set<Education>educations = new HashSet<>();
-    private Set<WorkExperience>workExperiences = new HashSet<>();
-
-
+    private String position;
 }

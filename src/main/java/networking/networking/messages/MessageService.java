@@ -23,8 +23,9 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-    public List<Message> getMessagesBetweenUsers(User sender, User recipient) {
-        return messageRepository.findBySenderAndRecipientOrSenderAndRecipientOrderByTimestamp(sender, recipient);
+    public List<Message> getChatMessages(User currentUser, User otherPerson) {
+        return messageRepository.findBySenderAndRecipientOrSenderAndRecipientOrderByTimestamp(
+                currentUser, otherPerson, otherPerson, currentUser);
     }
 
 }

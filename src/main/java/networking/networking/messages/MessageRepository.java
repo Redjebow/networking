@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findBySenderAndRecipientOrSenderAndRecipientOrderByTimestamp(
-            User sender, User recipient);
+            User sender1, User recipient1, User sender2, User recipient2);
 }

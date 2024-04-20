@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import networking.networking.country.Country;
 import networking.networking.education.Education;
+import networking.networking.messages.Message;
 import networking.networking.skill.Skill;
 import networking.networking.workExperience.WorkExperience;
 
@@ -48,4 +49,10 @@ public class User {
 
     @ManyToMany
     private Set<Skill> interests;
+
+    @OneToMany(mappedBy = "sender")
+    private List<Message> sentMessages;
+
+    @OneToMany(mappedBy = "recipient")
+    private List<Message> receivedMessages;
 }

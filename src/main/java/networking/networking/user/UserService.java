@@ -1,8 +1,10 @@
 package networking.networking.user;
 
+import networking.networking.exceptions.UserNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,6 +38,12 @@ public class UserService {
             }
         }
         return false;
+    }
 
+    public void validateUserExist(Long userId) {
+        Optional <User> optionalUser = userRepository.findById(userId);
+        if( optionalUser.isEmpty()) {
+            throw new UserNotFoundException(userId);
+        }
     }
 }

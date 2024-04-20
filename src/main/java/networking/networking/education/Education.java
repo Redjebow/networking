@@ -2,6 +2,7 @@ package networking.networking.education;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import networking.networking.user.User;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "educations")
+@Builder
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

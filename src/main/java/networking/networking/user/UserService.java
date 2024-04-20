@@ -112,14 +112,18 @@ public class UserService {
         }
     }
 
+    private List<User> getAllUsersExceptCurrent(User currentuser){
+        List<User> allUsers = (List<User>) userRepository.findAll();
+        allUsers.remove(currentuser);
+        return allUsers;
+    }
+
     public String showAllUsersSortedByInterests(Model model, Authentication authentication) {
         MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
-        User currentUser = myUserDetails.getUser();
-        List<User> allUsers = (List<User>) userRepository.findAll();
-        allUsers.remove(currentUser);
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        List<User> allUsersExceptCurrent = getAllUsersExceptCurrent(currentUser);
 
-        sortUsersByInterest(currentUser, allUsers);
-        List<User> sortedUsersByCurrentUserInterests = sortUsersByInterest(currentUser, allUsers);
+        List<User> sortedUsersByCurrentUserInterests = sortUsersByInterest(currentUser, allUsersExceptCurrent);
 
         model.addAttribute("users", sortedUsersByCurrentUserInterests);
         model.addAttribute("countries", countryRepository.findAll());

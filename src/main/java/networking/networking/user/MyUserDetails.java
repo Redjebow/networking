@@ -2,13 +2,17 @@ package networking.networking.user;
 
 import lombok.Getter;
 import networking.networking.country.Country;
+import networking.networking.education.Education;
+import networking.networking.messages.Message;
 import networking.networking.skill.Skill;
+import networking.networking.workExperience.WorkExperience;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -46,7 +50,18 @@ public class MyUserDetails implements UserDetails {
     public  String getCity(){return  user.getCity();}
     public Set<Skill>getSkills(){return user.getSkills();}
     public Set<Skill>getInterests(){return user.getInterests();}
-
+    public Set<Education> getEducations(){
+        return user.getEducations();
+    }
+    public Set<WorkExperience> getWorkExperiences(){
+        return user.getWorkExperiences();
+    }
+    public List<Message> getSentMessages(){
+        return user.getSentMessages();
+    }
+    public List<Message> getReceivedMessages(){
+        return user.getReceivedMessages();
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

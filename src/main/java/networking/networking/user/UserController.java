@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public String getAllCommunityRoleUser(Model model) {
+    public String registerNewUser(Model model) {
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("countries", countryRepository.findAll());
         return "all-users";

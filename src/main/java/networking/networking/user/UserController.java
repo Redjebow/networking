@@ -5,6 +5,7 @@ import networking.networking.country.CountryRepository;
 import networking.networking.enums.SkillEnum;
 import networking.networking.event.Event;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,5 +69,12 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("country", countryRepository.findAll());
         return "editUser";
+    }
+    @GetMapping("/profile")
+    public String userProfile(Model model, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", user);
+        return "profile";
     }
 }

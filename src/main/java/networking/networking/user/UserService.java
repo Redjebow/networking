@@ -7,6 +7,7 @@ import networking.networking.enums.SkillEnum;
 import networking.networking.exceptions.UserNotFoundException;
 import networking.networking.workExperience.WorkExperience;
 import networking.networking.workExperience.WorkExperienceRepository;
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -79,9 +80,6 @@ public class UserService {
         education.setUser(user);
         educationRepository.save(education);
 
-//        user.getWorkExperiences().add(workExperience);
-//        user.getEducations().add(education);
-
         return "result";
     }
 
@@ -104,5 +102,8 @@ public class UserService {
         if (optionalUser.isEmpty()) {
             throw new UserNotFoundException(userId);
         }
+    }
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
     }
 }

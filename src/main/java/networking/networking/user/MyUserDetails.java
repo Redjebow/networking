@@ -1,7 +1,10 @@
 package networking.networking.user;
 
+
 import networking.networking.country.Country;
+import networking.networking.education.Education;
 import networking.networking.skill.Skill;
+import networking.networking.workExperience.WorkExperience;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,11 +42,14 @@ public class MyUserDetails implements UserDetails {
     public String getLastName(){return user.getLastName();}
     public String getRole(){return user.getRole();}
     public String getEmail(){return user.getEmail();}
-    public String getPoneNumber(){return user.getPhoneNumber();}
+    public String getPhoneNumber(){return user.getPhoneNumber();}
     public Country getCountry(){return  user.getCountry();}
     public  String getCity(){return  user.getCity();}
     public Set<Skill>getSkills(){return user.getSkills();}
     public Set<Skill>getInterests(){return user.getInterests();}
+    public String getDescription(){return  user.getDescription();}
+    public Set<Education> getEducations(){return  user.getEducations();}
+    private Set<WorkExperience> workExperiences(){return user.getWorkExperiences();}
 
     @Override
     public boolean isAccountNonExpired() {

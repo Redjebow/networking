@@ -15,14 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
     public UserService userService;
     public UserMapper userMapper;
-    public UserController(UserService userService, UserMapper userMapper){
+    public UserRepository userRepository;
+    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository){
 
         this.userMapper = userMapper;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
-    @Autowired
-    UserRepository userRepository;
 
     @GetMapping("/add")
     public String addUserUserRole(Model model){
@@ -30,10 +30,10 @@ public class UserController {
         return "user-register";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/all")
     public String getAllCommunityRoleUser(Model model){
         model.addAttribute("users", userRepository.findAll());
-        return "users";
+        return "all-users";
     }
     @PostMapping("/submitUser")
     public ModelAndView submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model ){

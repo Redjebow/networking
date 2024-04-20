@@ -115,6 +115,8 @@ public class UserService {
 
     private List<User> getAllUsersExceptCurrent(User currentuser) {
         List<User> allUsers = (List<User>) userRepository.findAll();
+        List<User> currentUserFriends = new ArrayList<>(currentuser.getFriends());
+        allUsers.removeAll(currentUserFriends);
         allUsers.remove(currentuser);
         return allUsers;
     }
@@ -123,8 +125,8 @@ public class UserService {
         MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
         User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
         List<User> allUsersExceptCurrent = getAllUsersExceptCurrent(currentUser);
-
         List<User> sortedUsersByCurrentUserInterests = sortUsersByInterest(currentUser, allUsersExceptCurrent);
+
 
         model.addAttribute("users", sortedUsersByCurrentUserInterests);
         model.addAttribute("countries", countryRepository.findAll());
@@ -217,7 +219,7 @@ public class UserService {
                 sortedUsers.add(user);
             }
         }
-
+        //TODO - maybe remove the current user & friends from the list? The page is about finding new friends
         return sortedUsers;
     }
 
@@ -252,7 +254,7 @@ public class UserService {
         Set<FriendRequest> pendingRequests2 = friendRequestRepository.findByRecipientAndStatus(sender, RequestStatus.PENDING);
         Set<FriendRequest> acceptedRequests = friendRequestRepository.findByRecipientAndStatus(recipient, RequestStatus.ACCEPTED);
         Set<FriendRequest> acceptedRequests2 = friendRequestRepository.findByRecipientAndStatus(sender, RequestStatus.ACCEPTED);
-        if (pendingRequests.size() > 1 || pendingRequests2.size() > 1 || acceptedRequests.size() > 1 || acceptedRequests2.size() > 1) {
+        if (!pendingRequests.isEmpty() || !pendingRequests2.isEmpty() || !acceptedRequests.isEmpty() || !acceptedRequests2.isEmpty()) {
             return true;
         }
         return false;

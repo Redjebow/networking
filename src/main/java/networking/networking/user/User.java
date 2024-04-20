@@ -1,10 +1,7 @@
 package networking.networking.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import networking.networking.country.Country;
 import networking.networking.education.Education;
 import networking.networking.messages.Message;
@@ -14,7 +11,8 @@ import networking.networking.workExperience.WorkExperience;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

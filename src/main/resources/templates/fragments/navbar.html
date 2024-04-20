@@ -43,8 +43,8 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
-                    <a class="nav-link" href="#" role="button" aria-expanded="false">
-                        Friend Requests
+                    <a class="nav-link" th:href="@{/users/showFriendRequests}" role="button" aria-expanded="false">
+                        Friends
                     </a>
                 </li>
                 <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">

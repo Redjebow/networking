@@ -1,7 +1,9 @@
 package networking.networking.event;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +32,7 @@ public class Event {
     @NotBlank
     private String address;
 
-    @NotBlank
+    @NotNull
     private LocalDateTime date;
 
     @NotBlank
@@ -39,8 +41,9 @@ public class Event {
     @NotBlank
     private String organizer;
 
-    @NotBlank
-    private int duration; // hours
+    @NotNull
+    @Min(10)
+    private int duration; // minutes
 
     @NotBlank
     private String phoneNumber;

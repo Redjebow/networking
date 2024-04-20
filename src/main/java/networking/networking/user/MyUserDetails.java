@@ -39,11 +39,11 @@ public class MyUserDetails implements UserDetails {
     public String getLastName(){return user.getLastName();}
     public String getRole(){return user.getRole();}
     public String getEmail(){return user.getEmail();}
-    public int getTelephone(){return user.getTelephone();}
+    public String getPoneNumber(){return user.getPhoneNumber();}
     public Country getCountry(){return  user.getCountry();}
     public  String getCity(){return  user.getCity();}
     public Set<Skill>getSkills(){return user.getSkills();}
-    public Set<Skill>getInterest(){return user.getInterest();}
+    public Set<Skill>getInterests(){return user.getInterests();}
 
     @Override
     public boolean isAccountNonExpired() {

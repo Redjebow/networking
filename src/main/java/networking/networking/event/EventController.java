@@ -1,5 +1,6 @@
 package networking.networking.event;
 
+import lombok.RequiredArgsConstructor;
 import networking.networking.user.UserDTO;
 import networking.networking.user.UserMapper;
 import networking.networking.user.UserRepository;
@@ -11,13 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/events")
+@RequiredArgsConstructor
 public class EventController {
-    public EventRepository eventRepository;
-    public EventService eventService;
-    public EventController(EventRepository eventRepository, EventService eventService){
-        this.eventRepository = eventRepository;
-        this.eventService = eventService;
-    }
+    public final EventRepository eventRepository;
+    public final EventService eventService;
+
     @GetMapping("/add")
     public String addNewEvent(Model model){
         model.addAttribute("event", new Event());

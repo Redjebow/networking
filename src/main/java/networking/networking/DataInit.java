@@ -7,6 +7,8 @@ import networking.networking.education.Education;
 import networking.networking.education.EducationRepository;
 import networking.networking.enums.CountryEnum;
 import networking.networking.enums.SkillEnum;
+import networking.networking.event.Event;
+import networking.networking.event.EventRepository;
 import networking.networking.skill.Skill;
 import networking.networking.skill.SkillRepository;
 import networking.networking.user.User;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +35,7 @@ public class DataInit implements ApplicationRunner {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EducationRepository educationRepository;
     private final WorkExperienceRepository workExperienceRepository;
+    private final EventRepository eventRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -49,10 +53,48 @@ public class DataInit implements ApplicationRunner {
             }
         }
 
-
         if (userRepository.count() == 0) {
             addUser1();
             addUser2();
+        }
+
+        if (eventRepository.count() == 0) {
+            Event event = Event.builder()
+                    .city("Razgrad")
+                    .address("ППМГ \"Акад. Никола Обрешков\"")
+                    .date(LocalDateTime.of(2024, 5, 10, 17, 0))
+                    .topic("Java for dummies")
+                    .organizer("Ludogorie soft")
+                    .duration(120)
+                    .phoneNumber("08886622331")
+                    .capacity(200)
+                    .build();
+
+            Event event2 = Event.builder()
+                    .city("Varna")
+                    .address("City Center")
+                    .date(LocalDateTime.of(2024, 6, 1, 18, 30))
+                    .topic("Java for dummies")
+                    .organizer("Ludogorie soft")
+                    .duration(120)
+                    .phoneNumber("08886622331")
+                    .capacity(2000)
+                    .build();
+
+            Event event3 = Event.builder()
+                    .city("Sofia")
+                    .address("Arena Armeec")
+                    .date(LocalDateTime.of(2024, 7, 11, 19, 0))
+                    .topic("How to build a website from scratch for less than 1 hour")
+                    .organizer("Python.org")
+                    .duration(60)
+                    .phoneNumber("08886332231")
+                    .capacity(8000)
+                    .build();
+
+            eventRepository.save(event);
+            eventRepository.save(event2);
+            eventRepository.save(event3);
         }
     }
 

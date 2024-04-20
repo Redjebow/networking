@@ -28,8 +28,7 @@ public class EventController {
     }
 
     @GetMapping("/all")
-    public String getAllCommunityRoleUser(Model model){
-        model.addAttribute("events", eventRepository.findAll());
-        return "all-events";
+    public String showAllEvents(Model model){
+        return eventService.showEventsSortedByDate(model);
     }
 }

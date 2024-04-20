@@ -26,21 +26,20 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/index","/users/**","/activity/list","/activity/sortedList","/users/allCommunities", "/users/communityByCategory").permitAll()
-                        .requestMatchers("/activity/add","/activity/delete","/activity/edit").hasAnyAuthority("ROLE_ADMIN","ROLE_COMMUNITY")
-                        .requestMatchers("/users/all-communityUsers").hasAuthority("ROLE_ADMIN")
+
+                        .requestMatchers("/", "/index", "/events/**","/users/**", "/login" , "/register", "/activities/show").permitAll()
                         .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .usernameParameter("userNameOrEmail")
-                        .defaultSuccessUrl("/index",true)
                         .permitAll()
                 )
                 .logout((logout) -> logout
                         .permitAll()
-                        .logoutSuccessUrl("/"))
-                .exceptionHandling().accessDeniedPage("/access-denied");
+                        .logoutSuccessUrl("/"));
 
 
         return http.build();

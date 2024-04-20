@@ -1,8 +1,15 @@
 package networking.networking.user;
 
 import networking.networking.exceptions.UserNotFoundException;
+import networking.networking.country.CountryRepository;
+import networking.networking.enums.SkillEnum;
+import networking.networking.event.Event;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,10 +17,14 @@ import java.util.Optional;
 public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserRepository userRepository;
+    private CountryRepository countryRepository;
+    private UserMapper userMapper;
 
-    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserMapper userMapper) {
+    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserMapper userMapper, CountryRepository countryRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.countryRepository = countryRepository;
     }
 
     public UserDTO makeCryptedPassword(UserDTO userDTO) {
@@ -22,8 +33,30 @@ public class UserService {
         return userDTO;
     }
 
-    public void saveUserRoleUser(User user) {
+    public String saveUser(UserDTO userDTO, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDTO);
+            model.addAttribute("countries", countryRepository.findAll());
+            model.addAttribute("skills", SkillEnum.values());
+            return "user-register";
+        }
+        if (cherForExistUserName(userDTO)) {
+            model.addAttribute("not_unique_name", "Username already exist");
+            model.addAttribute("user", userDTO);
+            model.addAttribute("countries", countryRepository.findAll());
+            model.addAttribute("skills", SkillEnum.values());
+            return "user-register";
+        }
+        if (!userDTO.getPassword().equals(userDTO.getRePassword())) {
+            model.addAttribute("PasswordDoNotMatch", "Password Do Not Match");
+            model.addAttribute("user", userDTO);
+            model.addAttribute("countries", countryRepository.findAll());
+            model.addAttribute("skills", SkillEnum.values());
+            return "user-register";
+        }
+        User user = userMapper.toEntity(userDTO);
         userRepository.save(user);
+        return "result";
     }
 
     public void deleteUser(Long id) {

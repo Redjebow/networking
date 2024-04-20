@@ -50,6 +50,14 @@ public class User {
     @ManyToMany
     private Set<Skill> interests;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private Set<User> friends;
+
     @OneToMany(mappedBy = "sender")
     private List<Message> sentMessages;
 

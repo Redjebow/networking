@@ -1,7 +1,9 @@
 package networking.networking.user;
 
 import jakarta.validation.Valid;
-import networking.networking.enums.CountryEnum;
+import networking.networking.country.CountryRepository;
+import networking.networking.enums.SkillEnum;
+import networking.networking.event.Event;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,45 +17,34 @@ public class UserController {
     public UserService userService;
     public UserMapper userMapper;
     public UserRepository userRepository;
+    public CountryRepository countryRepository;
 
-    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository) {
-
+    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository, CountryRepository countryRepository) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.countryRepository = countryRepository;
     }
 
 
     @GetMapping("/add")
     public String addUserUserRole(Model model) {
         model.addAttribute("user", new UserDTO());
+        model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("skills", SkillEnum.values());
         return "user-register";
     }
 
     @GetMapping("/all")
     public String getAllCommunityRoleUser(Model model) {
         model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("countries", countryRepository.findAll());
         return "all-users";
     }
 
-    @PostMapping("/submitUser")
-    public ModelAndView submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userDTO);
-            return new ModelAndView("user-register");
-        }
-        if (userService.cherForExistUserName(userDTO)) {
-            model.addAttribute("not_unique_name", "Username already exist");
-            model.addAttribute("user", userDTO);
-            return new ModelAndView("user-register");
-        }
-        if (!userDTO.getPassword().equals(userDTO.getRePassword())) {
-            model.addAttribute("PasswordDoNotMatch", "Password Do Not Match");
-            model.addAttribute("user", userDTO);
-            return new ModelAndView("user-register");
-        }
-
-        return new ModelAndView("result");
+    @PostMapping("/add")
+    public String submitUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult bindingResult, Model model) {
+        return userService.saveUser(userDTO, bindingResult, model);
     }
 
 
@@ -75,7 +66,7 @@ public class UserController {
     public String editUser(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
         model.addAttribute("user", user);
-        model.addAttribute("country", CountryEnum.values());
+        model.addAttribute("country", countryRepository.findAll());
         return "editUser";
     }
 }

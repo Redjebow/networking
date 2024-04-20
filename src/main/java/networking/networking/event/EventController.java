@@ -1,13 +1,13 @@
 package networking.networking.event;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import networking.networking.user.UserDTO;
-import networking.networking.user.UserMapper;
-import networking.networking.user.UserRepository;
-import networking.networking.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -19,8 +19,12 @@ public class EventController {
 
     @GetMapping("/add")
     public String addNewEvent(Model model){
-        model.addAttribute("event", new Event());
-        return "event-register";
+        return eventService.showAddEventForm(model);
+    }
+
+    @PostMapping("/add")
+    public String saveEvent(@ModelAttribute @Valid Event event, BindingResult bindingResult, Model model){
+        return eventService.saveEvent(event, bindingResult, model);
     }
 
     @GetMapping("/all")

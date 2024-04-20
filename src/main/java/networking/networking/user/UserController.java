@@ -11,6 +11,7 @@ import networking.networking.friendRequest.FriendRequestRepository;
 import networking.networking.skill.SkillRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -104,14 +105,61 @@ public class UserController {
         MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
         User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
         Set<FriendRequest> requesters = friendRequestRepository.findByRecipientAndStatus(currentUser, RequestStatus.PENDING);
-        Set<FriendRequest> friends = friendRequestRepository.findByRecipientAndStatus(currentUser, RequestStatus.ACCEPTED);
+//        Set<FriendRequest> friends = friendRequestRepository.findByRecipientAndStatus(currentUser, RequestStatus.ACCEPTED);
         model.addAttribute("requesters", requesters);
+        FriendRequest friendRequest = new FriendRequest();
         // for each - <hr> <button -> ACCEPTED / REJECTED -- @PathVariable Long id
         // currentUser.setFriends(currentUser.getFriends().add(id)); // will save in a DB table users-friends
-
-        model.addAttribute("friends", friends); // for each - // START CHAT -> @Get (form + msg - if any) text field + button -> post method
+        model.addAttribute("friends", currentUser.getFriends());
+        // for each - // START CHAT -> @Get (form + msg - if any) text field + button -> post method
         // set interval ( javascript ) seconds refresh
-        return " ";
+        return "friends-and-requests";
+    }
+
+
+    @PostMapping("/acceptNewFriend/{id}")
+    public String acceptNewFriend(@PathVariable Long id, Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        User requester;
+        if (userRepository.findById(id).isPresent()) {
+            requester = userRepository.findById(id).get();
+            if (friendRequestRepository.findByRecipientAndSenderAndStatus(currentUser, requester, RequestStatus.PENDING).isPresent()) {
+                FriendRequest currentFriendRequest = friendRequestRepository.findByRecipientAndSenderAndStatus(currentUser, requester, RequestStatus.PENDING).get();
+                currentFriendRequest.setStatus(RequestStatus.ACCEPTED);
+                friendRequestRepository.save(currentFriendRequest);
+            }
+            Set<User> currentUserFriends = currentUser.getFriends();
+            Set<User> requesterFriends = requester.getFriends();
+            currentUserFriends.add(requester);
+            currentUser.setFriends(currentUserFriends);
+            requesterFriends.add(currentUser);
+            requester.setFriends(requesterFriends);
+            userRepository.save(currentUser);
+            userRepository.save(requester);
+        }
+        return "redirect:/users/showFriendRequests";
+    }
+
+    @PostMapping("/rejectNewFriend/{id}")
+    public String rejectNewFriend(@PathVariable Long id, Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        User requester;
+        if (userRepository.findById(id).isPresent()) {
+            requester = userRepository.findById(id).get();
+            if (friendRequestRepository.findByRecipientAndSenderAndStatus(currentUser, requester, RequestStatus.PENDING).isPresent()) {
+                FriendRequest currentFriendRequest = friendRequestRepository.findByRecipientAndSenderAndStatus(currentUser, requester, RequestStatus.PENDING).get();
+                currentFriendRequest.setStatus(RequestStatus.REJECTED);
+                friendRequestRepository.save(currentFriendRequest);
+            }
+        }
+        return "redirect:/users/showFriendRequests";
+    }
+
+    @GetMapping("/chat/{id}")
+    public String openChatForm(@PathVariable Long id, Authentication authentication){
+        return "";
     }
 
 }

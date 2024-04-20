@@ -13,23 +13,29 @@
         <table class="table table-hover">
             <thead>
             <tr>
+                <th scope="col">Date</th>
                 <th scope="col">Topic</th>
                 <th scope="col">Organizer</th>
                 <th scope="col">City</th>
                 <th scope="col">Address</th>
-                <th scope="col">Date/Time</th>
+                <th scope="col">Time</th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="event : ${events}">
+                <td>
+                    <div th:with="eventDateTime=${event.date}">
+                        <span th:text="${#temporals.format(eventDateTime, 'dd.MM.yyyy')}"></span>
+                    </div>
+                </td>
                 <td th:text="${event.topic}"></td>
                 <td th:text="${event.organizer}"></td>
                 <td th:text="${event.city}"></td>
                 <td th:text="${event.address}"></td>
                 <td>
                     <div th:with="eventDateTime=${event.date}">
-                        <span th:text="${#temporals.format(eventDateTime, 'HH:mm / dd.MM.yyyy')}"></span>
+                        <span th:text="${#temporals.format(eventDateTime, 'HH:mm')}"></span>
                     </div>
                 </td>
                 <td>

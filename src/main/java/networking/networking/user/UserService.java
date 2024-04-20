@@ -196,4 +196,18 @@ public class UserService {
         }
         return "";  // TODO raise new error - pass it back to the frontend - no extension found...
     }
+  
+    public List<User> getSortedList(Long id) {
+        List<User> sortedUsers = new ArrayList<>();
+        List<User> usersList = (List<User>) userRepository.findAll();
+        for (User user : usersList) {
+            for (Skill skill : user.getSkills()) {
+                if (skill.getId()==id) {
+                    sortedUsers.add(user);
+                    break; // Намерили сме съвпадение, прекратяваме цикъла за уменията на този потребител
+                }
+            }
+        }
+        return sortedUsers;
+    }
 }

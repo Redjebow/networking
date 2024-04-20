@@ -45,7 +45,7 @@ public class MyUserDetails implements UserDetails {
     public String getLastName(){return user.getLastName();}
     public String getRole(){return user.getRole();}
     public String getEmail(){return user.getEmail();}
-    public String getPoneNumber(){return user.getPhoneNumber();}
+    public String getPhoneNumber(){return user.getPhoneNumber();}
     public Country getCountry(){return  user.getCountry();}
     public  String getCity(){return  user.getCity();}
     public Set<Skill>getSkills(){return user.getSkills();}
@@ -61,6 +61,9 @@ public class MyUserDetails implements UserDetails {
     }
     public List<Message> getReceivedMessages(){
         return user.getReceivedMessages();
+    }
+    public String getDescription(){
+        return user.getDescription();
     }
     @Override
     public boolean isAccountNonExpired() {

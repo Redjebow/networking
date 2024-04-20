@@ -17,6 +17,7 @@
             .dropdown-menu > li:hover > .dropdown-submenu {
                 display: block;
             }
+
         </style>
     </head>
     <div class="container-fluid">
@@ -42,12 +43,12 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
-                    <a class="nav-link" href="#" role="button"  aria-expanded="false">
+                    <a class="nav-link" href="#" role="button" aria-expanded="false">
                         Friend Requests
                     </a>
                 </li>
                 <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
-                    <a class="nav-link" th:href="@{/users/all}" role="button"  aria-expanded="false">
+                    <a class="nav-link" th:href="@{/users/all}" role="button" aria-expanded="false">
                         Find new friends
                     </a>
                 </li>
@@ -59,15 +60,25 @@
                     <button class="btn btn-dark mр-3" type="submit" style="margin-right: 20px;">Search</button>
                 </form>
                 <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item dropdown">
-                    <a class="nav-link" href="/login" role="button"  aria-expanded="false">
+                    <a class="nav-link" href="/login" role="button" aria-expanded="false">
                         Login
                     </a>
                 </li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}">
-                    <a class="nav-link" href="/profile" role="button"  aria-expanded="false">
-                        Profile
-                    </a>
-                </li>
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <li>
+
+                        <a th:class="nav-link" th:href="@{/users/profile}">
+                        <span th:inline="text" class="fas fa-user-check text-primary-emphasis">You are signed in as: <span
+                                th:text="${#authentication.getPrincipal().getFirstName()}"></span></span></a>
+                    </li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-link text-primary-emphasis"><span
+                                    class="fas fa-sign-out-alt"></span>Logout
+                            </button>
+                        </form>
+                    </li>
+                </th:block>
             </ul>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

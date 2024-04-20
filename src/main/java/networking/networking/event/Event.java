@@ -53,4 +53,6 @@ public class Event {
 
     @Min(value = 10, message = "Your event must have a capacity of 10 or above!")
     private int capacity; // TODO - use it with tickets or not?
+
+    private String eventPicturePath;
 }

@@ -1,38 +1,45 @@
 package networking.networking.user;
-import jakarta.persistence.*;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import networking.networking.country.Country;
 import networking.networking.skill.Skill;
 
 import java.util.Set;
 
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class UserDTO {
+    @NotNull
+    @Size(min = 3, max = 10)
     private String username;
+    @NotNull
     private String password;
-    private String role;
+    @NotNull
+    private String rePassword;
+    @NotNull
+    @Email
     private String email;
+    @NotNull
+    @Size(min = 2, max = 15)
     private String firstName;
+    @NotNull
+    @Size(min = 2, max = 15)
     private String lastName;
     private int telephone;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Country country;
+    @NotNull
     private String city;
+    @NotNull
     @ManyToMany
     private Set<Skill> skills;
+    @NotNull
     @ManyToMany
     private Set<Skill> interest;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -50,12 +57,12 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public String getRePassword() {
+        return rePassword;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
     }
 
     public String getEmail() {

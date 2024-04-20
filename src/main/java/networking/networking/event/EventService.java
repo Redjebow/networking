@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EventService {
@@ -32,7 +33,7 @@ public class EventService {
             return "event-register";
         }
         eventRepository.save(event);
-        return "event-register";
+        return "redirect:/index";
     }
 
     private boolean isFutureDate(LocalDateTime localDateTime) {
@@ -40,4 +41,10 @@ public class EventService {
         LocalDate dateToCheck = localDateTime.toLocalDate();
         return dateToCheck.isAfter(now);
     }
+
+    public String showEventsSortedByDate(Model model){
+        model.addAttribute("events", eventRepository.findAllByOrderByDateAsc());
+        return "events-all";
+    }
+
 }

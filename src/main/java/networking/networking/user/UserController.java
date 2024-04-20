@@ -101,4 +101,9 @@ public class UserController {
         model.addAttribute("users", userService.getSortedList(id));
         return "sorted-users";
     }
+    @GetMapping("/{id}/profile")
+    public String getUserProfile(@PathVariable Long id, Model model){
+            model.addAttribute("selectedUser", userRepository.findById(id).orElse(null));
+        return "user-profile";
+    }
 }

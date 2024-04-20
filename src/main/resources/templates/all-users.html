@@ -51,6 +51,8 @@
                     <li th:each="interest : ${user.interests}" th:text="${interest.name}"></li>
                 </ul>
                 </td>
+                <td><a th:href="@{'/users/' + ${user.id} + '/profile'}">
+                    <button type="submit" class="btn btn-success">Details</button></a></td>
             </tr>
             </tbody>
         </table>

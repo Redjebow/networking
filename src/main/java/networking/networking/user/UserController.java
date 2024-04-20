@@ -1,7 +1,7 @@
 package networking.networking.user;
 
 import jakarta.validation.Valid;
-import networking.networking.enums.CountryEnum;
+import networking.networking.country.CountryRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +15,13 @@ public class UserController {
     public UserService userService;
     public UserMapper userMapper;
     public UserRepository userRepository;
+    public CountryRepository countryRepository;
 
-    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository) {
-
+    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository, CountryRepository countryRepository) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.countryRepository = countryRepository;
     }
 
 
@@ -75,7 +76,7 @@ public class UserController {
     public String editUser(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
         model.addAttribute("user", user);
-        model.addAttribute("country", CountryEnum.values());
+        model.addAttribute("country", countryRepository.findAll());
         return "editUser";
     }
 }

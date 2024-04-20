@@ -33,10 +33,6 @@
                                              alt=""
                                              class="card-img-top img-fluid img-thumbnail"/>
                                     </div>
-                                    <!-- User Name -->
-                                    <h5 class="text-center"
-                                        th:text="${user.firstName +' '+user.lastName}"></h5>
-
                                 </div>
                             </div>
                         </div>
@@ -94,10 +90,21 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+                    <form method="post" th:action="@{'/users/sendFriendRequest/' +  ${user.id}}">
+                        <button type="submit" class="btn btn-primary">Send friend request</button>
+                    </form>
                 </div>
+                <div th:if="${success}" class="alert alert-success">
+                    <p th:text="${success}"></p>
+                </div>
+                <div th:if="${alreadySent}" class="alert alert-warning">
+                    <p th:text="${alreadySent}"></p>
+                </div>
+
             </section>
         </div>
     </div>

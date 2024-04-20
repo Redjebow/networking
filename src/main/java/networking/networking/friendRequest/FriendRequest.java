@@ -1,7 +1,10 @@
 package networking.networking.friendRequest;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import networking.networking.enums.RequestStatus;
 import networking.networking.user.User;
 
@@ -10,6 +13,9 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "friend_request")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FriendRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

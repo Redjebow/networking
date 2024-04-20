@@ -1,13 +1,15 @@
 package networking.networking.user;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import networking.networking.country.CountryRepository;
 import networking.networking.education.EducationRepository;
+import networking.networking.enums.RequestStatus;
 import networking.networking.enums.SkillEnum;
-import org.springframework.http.ResponseEntity;
-import networking.networking.event.Event;
-import networking.networking.skill.Skill;
+import networking.networking.friendRequest.FriendRequest;
+import networking.networking.friendRequest.FriendRequestRepository;
 import networking.networking.skill.SkillRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,27 +21,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
-    public UserService userService;
-    public UserMapper userMapper;
-    public UserRepository userRepository;
-    public CountryRepository countryRepository;
+    public final UserService userService;
+    public final UserMapper userMapper;
+    public final UserRepository userRepository;
+    public final CountryRepository countryRepository;
     private final EducationRepository educationRepository;
     private final SkillRepository skillRepository;
-
-    public UserController(UserService userService, UserMapper userMapper, UserRepository userRepository, CountryRepository countryRepository,
-                          EducationRepository educationRepository,
-                          SkillRepository skillRepository) {
-        this.userMapper = userMapper;
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.countryRepository = countryRepository;
-        this.educationRepository = educationRepository;
-        this.skillRepository = skillRepository;
-    }
+    private final FriendRequestRepository friendRequestRepository;
 
     @PostMapping("/upload")
     @ResponseBody
@@ -88,15 +82,36 @@ public class UserController {
     }
 
     @GetMapping("/bySkill")
-    public String getFilmsByGenre(@RequestParam("skill") List<Long> id, Model model){
-        model.addAttribute("skills",skillRepository.findAll());
+    public String getFilmsByGenre(@RequestParam("skill") List<Long> id, Model model) {
+        model.addAttribute("skills", skillRepository.findAll());
         model.addAttribute("users", userService.getSortedList(id));
         return "sorted-users";
     }
 
     @GetMapping("/{id}/profile") // TODO - move ID after delete --> /delete/{id} + fix thymeleaf
-    public String getUserProfile(@PathVariable Long id, Model model){
-            model.addAttribute("user", userRepository.findById(id).orElseThrow());
+    public String getUserProfile(@PathVariable Long id, Model model) {
+        model.addAttribute("user", userRepository.findById(id).orElseThrow());
         return "user-profile";
     }
+
+    @PostMapping("/sendFriendRequest/{id}")
+    public String sendFriendRequest(@PathVariable Long id, Authentication authentication, RedirectAttributes redirectAttributes) {
+        return userService.sendFriendRequest(id, authentication, redirectAttributes);
+    }
+
+    @GetMapping("/showFriendRequests")
+    public String showFriendRequests(Model model, Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        Set<FriendRequest> requesters = friendRequestRepository.findByRecipientAndStatus(currentUser, RequestStatus.PENDING);
+        Set<FriendRequest> friends = friendRequestRepository.findByRecipientAndStatus(currentUser, RequestStatus.ACCEPTED);
+        model.addAttribute("requesters", requesters);
+        // for each - <hr> <button -> ACCEPTED / REJECTED -- @PathVariable Long id
+        // currentUser.setFriends(currentUser.getFriends().add(id)); // will save in a DB table users-friends
+
+        model.addAttribute("friends", friends); // for each - // START CHAT -> @Get (form + msg - if any) text field + button -> post method
+        // set interval ( javascript ) seconds refresh
+        return " ";
+    }
+
 }

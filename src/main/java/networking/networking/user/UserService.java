@@ -1,10 +1,14 @@
 package networking.networking.user;
 
+import lombok.RequiredArgsConstructor;
 import networking.networking.country.CountryRepository;
 import networking.networking.education.Education;
 import networking.networking.education.EducationRepository;
+import networking.networking.enums.RequestStatus;
 import networking.networking.enums.SkillEnum;
 import networking.networking.exceptions.UserNotFoundException;
+import networking.networking.friendRequest.FriendRequest;
+import networking.networking.friendRequest.FriendRequestRepository;
 import networking.networking.skill.Skill;
 import networking.networking.skill.SkillRepository;
 import networking.networking.workExperience.WorkExperience;
@@ -24,32 +28,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private UserRepository userRepository;
-    private CountryRepository countryRepository;
-    private UserMapper userMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final CountryRepository countryRepository;
+    private final UserMapper userMapper;
     private final WorkExperienceRepository workExperienceRepository;
     private final EducationRepository educationRepository;
     private final SkillRepository skillRepository;
     public static final String UPLOAD_DIRECTORY = "C:/app_data";
-
-    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserMapper userMapper, CountryRepository countryRepository,
-                       WorkExperienceRepository workExperienceRepository,
-                       EducationRepository educationRepository,
-                       SkillRepository skillRepository) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.countryRepository = countryRepository;
-        this.workExperienceRepository = workExperienceRepository;
-        this.educationRepository = educationRepository;
-        this.skillRepository = skillRepository;
-    }
+    private final FriendRequestRepository friendRequestRepository;
 
 
     public String saveUser(UserDTO userDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -225,5 +219,42 @@ public class UserService {
         }
 
         return sortedUsers;
+    }
+
+    public String sendFriendRequest(Long id, Authentication authentication, RedirectAttributes redirectAttributes) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        try {
+            validateUserExist(id);  // throw error
+        } catch (UserNotFoundException e) {
+            return ""; // TODO - 404 or some error page ... bla
+        }
+        User recipient = userRepository.findById(id).get();
+        FriendRequest friendRequest = FriendRequest.builder()
+                .sender(currentUser)
+                .recipient(recipient)
+                .createdAt(LocalDateTime.now())
+                .status(RequestStatus.PENDING)
+                .build();
+        if (!isRequestAlreadySent(currentUser, recipient)) {
+            friendRequestRepository.save(friendRequest);
+            redirectAttributes.addFlashAttribute("success", "Friend request sent.");
+        } else {
+            redirectAttributes.addFlashAttribute("alreadySent", "Friend request already sent.");
+
+        }
+
+        return "redirect:/users/" + id + "/profile";
+    }
+
+    private boolean isRequestAlreadySent(User sender, User recipient) {
+        Set<FriendRequest> pendingRequests = friendRequestRepository.findByRecipientAndStatus(recipient, RequestStatus.PENDING);
+        Set<FriendRequest> pendingRequests2 = friendRequestRepository.findByRecipientAndStatus(sender, RequestStatus.PENDING);
+        Set<FriendRequest> acceptedRequests = friendRequestRepository.findByRecipientAndStatus(recipient, RequestStatus.ACCEPTED);
+        Set<FriendRequest> acceptedRequests2 = friendRequestRepository.findByRecipientAndStatus(sender, RequestStatus.ACCEPTED);
+        if (pendingRequests.size() > 1 || pendingRequests2.size() > 1 || acceptedRequests.size() > 1 || acceptedRequests2.size() > 1) {
+            return true;
+        }
+        return false;
     }
 }

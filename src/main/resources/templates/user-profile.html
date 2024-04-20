@@ -12,7 +12,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 <br><br>
-<div class="container text-center">
+<div class="container text-center flex-grow-1">
     <h1>User Profile</h1>
     <div class="row align-items-center">
         <div class="col">
@@ -25,11 +25,17 @@
                                 <div class="widget user">
                                     <!-- User Image -->
                                     <div class="image d-flex justify-content-center">
-                                        <img th:src="@{/logo.png}" width="120" height="120" alt="" class="">
+                                        <img th:if="${not #strings.isEmpty(user.profilePicturePath)}"
+                                             th:src="@{'/images/' + ${user.profilePicturePath}}"
+                                             class="card-img-top img-fluid img-thumbnail"/>
+                                        <img th:unless="${not #strings.isEmpty(user.profilePicturePath)}"
+                                             th:src="@{/logo.png}"
+                                             alt=""
+                                             class="card-img-top img-fluid img-thumbnail"/>
                                     </div>
                                     <!-- User Name -->
                                     <h5 class="text-center"
-                                        th:text="${selectedUser.firstName +' '+selectedUser.lastName}"></h5>
+                                        th:text="${user.firstName +' '+user.lastName}"></h5>
 
                                 </div>
                             </div>
@@ -40,40 +46,40 @@
                                     <div class="widget personal-info">
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Username: </label>
-                                            <span th:text="${selectedUser.username}"></span>
+                                            <span th:text="${user.username}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">First Name: </label>
-                                            <span th:text="${selectedUser.firstName}"></span>
+                                            <span th:text="${user.firstName}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Last Name: </label>
-                                            <span th:text="${selectedUser.lastName}"></span>
+                                            <span th:text="${user.lastName}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">E-mail: </label>
-                                            <span th:text="${selectedUser.email}"></span>
+                                            <span th:text="${user.email}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Phone Number: </label>
-                                            <span th:text="${selectedUser.phoneNumber}"></span>
+                                            <span th:text="${user.phoneNumber}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Description: </label>
-                                            <span th:text="${selectedUser.description}"></span>
+                                            <span th:text="${user.description}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Country: </label>
-                                            <span th:text="${selectedUser.country.name}"></span>
+                                            <span th:text="${user.country.name}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">City: </label>
-                                            <span th:text="${selectedUser.city}"></span>
+                                            <span th:text="${user.city}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Educations: </label>
                                             <ul>
-                                                <li th:each="education : ${selectedUser.educations}"
+                                                <li th:each="education : ${user.educations}"
                                                     th:if="${education != null}"
                                                     th:text="${education.schoolName} + ' (' + ${education.startDate} + ' - ' + ${education.endDate} + ')'"></li>
                                             </ul>
@@ -81,7 +87,7 @@
                                         <div class="form-group">
                                             <label style="font-size: 14px;">Work experiences: </label>
                                             <ul>
-                                                <li th:each="workExperience : ${selectedUser.workExperiences}"
+                                                <li th:each="workExperience : ${user.workExperiences}"
                                                     th:if="${workExperience != null}"
                                                     th:text="${workExperience.companyName} + ' as ' +  ${workExperience.position} + ' (' + ${workExperience.startDate} + ' - ' + ${workExperience.endDate} + ')'"></li>
                                             </ul>
@@ -96,7 +102,7 @@
         </div>
     </div>
 </div>
-<footer th:include="fragments/footer.html"></footer>
+<div th:replace="~{fragments/footer.html}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

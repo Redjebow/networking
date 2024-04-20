@@ -30,7 +30,7 @@ public class EventController {
     }
     @GetMapping("/{id}/events")
     public String getUserProfile(@PathVariable Long id, Model model){
-        model.addAttribute("selectedEvent", eventRepository.findById(id).orElse(null));
+        model.addAttribute("selectedEvent", eventRepository.findById(id).orElseThrow());
         return "events";
     }
 }

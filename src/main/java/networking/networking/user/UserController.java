@@ -65,22 +65,13 @@ public class UserController {
         return userService.saveUser(userDTO, bindingResult, model, redirectAttributes);
     }
 
-
-    @GetMapping("/details")
-    public String getUserDetails(Model model, Authentication authentication) {
-        String username = authentication.getName();
-        User user = userRepository.getUserByUsername(username);
-        model.addAttribute("user", user);
-        return "user-profile";
-    }
-
-    @GetMapping("/{id}/delete")
+    @GetMapping("/{id}/delete")  // TODO - move ID after delete --> /delete/{id} + fix thymeleaf
     public ModelAndView deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return new ModelAndView("result");
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/{id}/edit") // TODO - move ID after delete --> /delete/{id} + fix thymeleaf
     public String editUser(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
         model.addAttribute("user", user);
@@ -95,15 +86,17 @@ public class UserController {
         model.addAttribute("user", user);
         return "profile";
     }
+
     @GetMapping("/bySkill")
     public String getFilmsByGenre(@RequestParam("skill") List<Long> id, Model model){
         model.addAttribute("skills",skillRepository.findAll());
         model.addAttribute("users", userService.getSortedList(id));
         return "sorted-users";
     }
-    @GetMapping("/{id}/profile")
+
+    @GetMapping("/{id}/profile") // TODO - move ID after delete --> /delete/{id} + fix thymeleaf
     public String getUserProfile(@PathVariable Long id, Model model){
-            model.addAttribute("selectedUser", userRepository.findById(id).orElse(null));
+            model.addAttribute("user", userRepository.findById(id).orElseThrow());
         return "user-profile";
     }
 }

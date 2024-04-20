@@ -12,59 +12,65 @@
 
 <body class="d-flex flex-column min-vh-100">
 <br><br>
-<div class="container text-center">
-    <h1>User Profile</h1>
-    <div class="row align-items-center">
-        <div class="col">
+<div class="container flex-grow-1">
+    <h1 class="text-center" th:text="${selectedEvent.topic}"></h1>
+    <div class="row">
+        <div class="col-12">
             <section class="user-profile section">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="sidebar">
-                                <!-- User Widget -->
                                 <div class="widget user">
-                                    <!-- User Image -->
+
                                     <div class="image d-flex justify-content-center">
-                                        <img th:src="@{/logo.png}" width="120" height="120" alt="" class="">
+
+                                        <img th:if="${not #strings.isEmpty(selectedEvent.eventPicturePath)}"
+                                             th:src="@{'/images/' + ${selectedEvent.eventPicturePath}}"
+                                             class="card-img-top img-fluid img-thumbnail"/>
+                                        <img th:unless="${not #strings.isEmpty(selectedEvent.eventPicturePath)}"
+                                             th:src="@{/logo.png}"
+                                             alt=""
+                                             class="card-img-top img-fluid img-thumbnail"/>
+
                                     </div>
-                                    <!-- User Name -->
-                                    <h5 class="text-center"
-                                        th:text="${selectedEvent.topic}"></h5>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6">
+                                <div>
                                     <div class="widget personal-info">
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Events topic: </label>
-                                            <span th:text="${selectedEvent.topic}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label style="font-size: 14px;">Organizer: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Organizer: </label>
                                             <span th:text="${selectedEvent.organizer}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">City: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">City: </label>
                                             <span th:text="${selectedEvent.city}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Address: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Address: </label>
                                             <span th:text="${selectedEvent.address}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Phone Number: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Phone Number: </label>
                                             <span th:text="${selectedEvent.phoneNumber}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Capacity: </label>
-                                            <span th:number="${selectedEvent.capacity}"></span>
+                                            <label class="fw-bold" style="font-size: 20px;">Capacity: </label>
+                                            <span th:text="${selectedEvent.capacity}"></span> people
+                                        </div>
+                                        <div class="form-group" style="display: flex">
+                                                <label class="fw-bold" style="font-size: 20px;">Date and Time: </label>
+                                            <div th:with="eventDateTime=${selectedEvent.date}" style="margin-top: 5px">
+                                                <span th:text="${#temporals.format(eventDateTime, 'dd.MM.yyyy - HH:mm')}"></span>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Duration: </label>
-                                            <span th:number="${selectedEvent.duration}"></span>
+                                            <label class="fw-bold" style="font-size: 20px;">Duration: </label>
+                                            <span th:text="${selectedEvent.duration}"></span> min
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +82,7 @@
         </div>
     </div>
 </div>
-<footer th:include="fragments/footer.html"></footer>
+<div th:replace="~{fragments/footer.html}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

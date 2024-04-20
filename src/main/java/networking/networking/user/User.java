@@ -48,4 +48,6 @@ public class User {
 
     @ManyToMany
     private Set<Skill> interests;
+
+    private Set<User> friends;
 }

@@ -17,6 +17,19 @@
                            placeholder="Enter your event's topic">
                     <span class="text-danger" th:if="${#fields.hasErrors('topic')}" th:errors="*{topic}"></span>
                 </div>
+                <div class="form-group mt-3 mb-3">
+                    <label>Upload Image</label>
+                    <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                    <div class="form-group">
+                        <input type="file" id="imageInput" name="image" accept="image/*" class="form-control-file">
+                    </div>
+                    <button type="button" id="uploadButton" class="btn btn-primary mt-3 mb-3">Upload image</button>
+                    <input type="hidden" id="imageFileName" th:field="*{eventPicturePath}" name="eventPicturePath">
+                    <img id="my_profile_img" th:if="${eventPicturePath == null}" src="/images/no_img.png" alt="No Image Available"
+                         class="img-thumbnail" style="max-width: 400px; max-height: 400px;"/>
+                    <img th:if="${eventPicturePath != null}" th:src="'/images/' + ${eventPicturePath}" alt="User profile picture"
+                         class="img-thumbnail" style="max-width: 400px; max-height: 400px;">
+                </div>
                 <div class="form-group">
                     <label for="topic">Organizer:</label>
                     <input type="text" th:field="*{organizer}" class="form-control" id="organizer"
@@ -73,7 +86,44 @@
         crossorigin="anonymous">
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var eventPicturePath = /*[[*{event.eventPicturePath}]]*/ null;
+        if (eventPicturePath) {
+            $('#my_profile_img').attr('src', '/images/' + eventPicturePath);
+        }
 
+        $('#uploadButton').click(function () {
+            var formData = new FormData();
+            var fileInput = document.getElementById('imageInput').files[0];
+            formData.append('image', fileInput);
+
+            var csrfToken = $("input[name='_csrf']").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/users/upload',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+                },
+                success: function(data) {
+                    var imgName = data.img_name;
+                    $('#imageFileName').val(imgName);
+                    $('#my_profile_img').attr('src', '/images/' + imgName);
+                    formData.append('imageFileName', imgName);
+                    formData.append('image', fileInput);
+                },
+                error: function (error) {
+                    console.log('Error uploading image: ' + error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 <div th:replace="~{fragments/footer.html}"></div>
 </html>

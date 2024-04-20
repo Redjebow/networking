@@ -68,6 +68,7 @@ public class DataInit implements ApplicationRunner {
                     .duration(120)
                     .phoneNumber("08886622331")
                     .capacity(200)
+                    .eventPicturePath("java.jpg")
                     .build();
 
             Event event2 = Event.builder()
@@ -79,6 +80,7 @@ public class DataInit implements ApplicationRunner {
                     .duration(120)
                     .phoneNumber("08886622331")
                     .capacity(2000)
+                    .eventPicturePath("java.jpg")
                     .build();
 
             Event event3 = Event.builder()
@@ -90,6 +92,7 @@ public class DataInit implements ApplicationRunner {
                     .duration(60)
                     .phoneNumber("08886332231")
                     .capacity(8000)
+                    .eventPicturePath("python.jpg")
                     .build();
 
             eventRepository.save(event);
@@ -111,7 +114,7 @@ public class DataInit implements ApplicationRunner {
         User user = User.builder()
                 .username("user")
                 .password(bCryptPasswordEncoder.encode("123"))
-                .role("Tester")
+                .role("ROLE_USER")
                 .email("user@abv.bg")
                 .firstName("Test")
                 .lastName("User")
@@ -173,7 +176,7 @@ public class DataInit implements ApplicationRunner {
         User user = User.builder()
                 .username("user2")
                 .password(bCryptPasswordEncoder.encode("123"))
-                .role("Tester")
+                .role("ROLE_USER")
                 .email("user2@abv.bg")
                 .firstName("Test")
                 .lastName("User2")

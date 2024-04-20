@@ -11,8 +11,8 @@
 
 
 <body class="d-flex flex-column min-vh-100">
-<br><br>
-<div class="container text-center">
+
+<div class="container text-center flex-grow-1 mt-5">
     <h1>User Profile</h1>
     <div class="row align-items-center">
         <div class="col">
@@ -25,7 +25,15 @@
                                 <div class="widget user">
                                     <!-- User Image -->
                                     <div class="image d-flex justify-content-center">
-                                        <img th:src="@{/logo.png}" width="120" height="120" alt="" class="">
+
+                                        <img th:if="${not #strings.isEmpty(user.profilePicturePath)}"
+                                             th:src="@{'/images/' + ${user.profilePicturePath}}"
+                                             class="card-img-top img-fluid img-thumbnail"/>
+                                        <img th:unless="${not #strings.isEmpty(user.profilePicturePath)}"
+                                             th:src="@{/logo.png}"
+                                             alt=""
+                                             class="card-img-top img-fluid img-thumbnail"/>
+
                                     </div>
                                     <!-- User Name -->
                                     <h5 class="text-center"

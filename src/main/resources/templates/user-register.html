@@ -28,9 +28,11 @@
                     </div>
                     <button type="button" id="uploadButton" class="btn btn-primary mt-3 mb-3">Upload image</button>
                     <input type="hidden" id="imageFileName" th:field="*{profilePicturePath}" name="profilePicturePath">
-                    <img id="my_profile_img" th:if="${profilePicturePath == null}" src="/images/no_img.png" alt="No Image Available"
+                    <img id="my_profile_img" th:if="${profilePicturePath == null}" src="/images/no_img.png"
+                         alt="No Image Available"
                          class="img-thumbnail" style="max-width: 400px; max-height: 400px;"/>
-                    <img th:if="${profilePicturePath != null}" th:src="'/images/' + ${profilePicturePath}" alt="User profile picture"
+                    <img th:if="${profilePicturePath != null}" th:src="'/images/' + ${profilePicturePath}"
+                         alt="User profile picture"
                          class="img-thumbnail" style="max-width: 400px; max-height: 400px;">
                 </div>
                 <span class="text-danger" th:if="${#fields.hasErrors('profilePicturePath')}"
@@ -48,57 +50,67 @@
                     <label for="rePassword">Re-enter Password:</label>
                     <input type="password" th:field="*{rePassword}" class="form-control" id="rePassword"
                            placeholder="Retype password">
-                    <span class="text-danger" th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}"></span>
+                    <span class="text-danger" th:if="${#fields.hasErrors('rePassword')}"
+                          th:errors="*{rePassword}"></span>
                 </div>
                 <div class="form-group">
                     <label for="firstName">First Name:</label>
-                    <input type="text" th:field="*{firstName}" class="form-control" id="firstName"placeholder="Enter your First name">
+                    <input type="text" th:field="*{firstName}" class="form-control" id="firstName"
+                           placeholder="Enter your First name">
                     <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name:</label>
-                    <input type="text" th:field="*{lastName}" class="form-control" id="lastName"placeholder="Enter your Last name">
+                    <input type="text" th:field="*{lastName}" class="form-control" id="lastName"
+                           placeholder="Enter your Last name">
                     <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{lastName}"></span>
                 </div>
                 <div class="form-group">
                     <label for="country">Country:</label>
                     <select th:field="*{country}" class="form-control" id="country">
                         <option value="" disabled selected hidden>Изберете вашата държава</option>
-                        <option th:each="country : ${countries}" th:value="${country.getId()}" th:text="${country.getName()}"></option>
+                        <option th:each="country : ${countries}" th:value="${country.getId()}"
+                                th:text="${country.getName()}"></option>
                     </select>
                     <span class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
                 </div>
                 <div class="form-group">
                     <label for="city"> City:</label>
-                    <input type="text" th:field="*{city}" class="form-control" id="city"placeholder="Enter your city">
+                    <input type="text" th:field="*{city}" class="form-control" id="city" placeholder="Enter your city">
                     <span class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
                 </div>
                 <div class="form-group">
                     <label for="email">E-mail:</label>
-                    <input type="email" th:field="*{email}" class="form-control" id="email"placeholder="Enter e-mail">
+                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Enter e-mail">
                     <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
                 <div class="form-group">
                     <label for="phoneNumber">Phone Number:</label>
-                    <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber"placeholder="Enter your phone number">
-                    <span class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+                    <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber"
+                           placeholder="Enter your phone number">
+                    <span class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                          th:errors="*{phoneNumber}"></span>
                 </div>
 
                 <hr>
 
                 <div class="form-group">
                     <label for="schoolName">School Name:</label>
-                    <input type="text" th:field="*{schoolName}" class="form-control" id="schoolName"placeholder="Enter your school name">
-                    <span class="text-danger" th:if="${#fields.hasErrors('schoolName')}" th:errors="*{schoolName}"></span>
+                    <input type="text" th:field="*{schoolName}" class="form-control" id="schoolName"
+                           placeholder="Enter your school name">
+                    <span class="text-danger" th:if="${#fields.hasErrors('schoolName')}"
+                          th:errors="*{schoolName}"></span>
                 </div>
                 <div class="form-group">
-                    <label for="startDate">Start Data:</label>
-                    <input type="date" th:field="*{startDate}" class="form-control" id="startDate"placeholder="Enter your start data">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" th:field="*{startDate}" class="form-control" id="startDate"
+                           placeholder="Enter your start data">
                     <span class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
                 </div>
                 <div class="form-group">
-                    <label for="endDate">End Data:</label>
-                    <input type="date" th:field="*{endDate}" class="form-control" id="endDate"placeholder="Enter your end data">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" th:field="*{endDate}" class="form-control" id="endDate"
+                           placeholder="Enter your end data">
                     <span class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
                 </div>
 
@@ -106,8 +118,10 @@
                 <hr>
                 <div class="form-group">
                     <label for="companyName">Company Name:</label>
-                    <input type="text" th:field="*{companyName}" class="form-control" id="companyName" placeholder="Enter your company name">
-                    <span class="text-danger" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}"></span>
+                    <input type="text" th:field="*{companyName}" class="form-control" id="companyName"
+                           placeholder="Enter your company name">
+                    <span class="text-danger" th:if="${#fields.hasErrors('companyName')}"
+                          th:errors="*{companyName}"></span>
                 </div>
                 <div class="form-group">
                     <label for="position">Position:</label>
@@ -116,40 +130,51 @@
                 </div>
                 <div class="form-group">
                     <label for="startDateWork">Start Data:</label>
-                    <input type="date" th:field="*{startDateWork}" class="form-control" id="startDateWork"placeholder="Enter your start data">
-                    <span class="text-danger" th:if="${#fields.hasErrors('startDateWork')}" th:errors="*{startDateWork}"></span>
+                    <input type="date" th:field="*{startDateWork}" class="form-control" id="startDateWork"
+                           placeholder="Enter your start data">
+                    <span class="text-danger" th:if="${#fields.hasErrors('startDateWork')}"
+                          th:errors="*{startDateWork}"></span>
                 </div>
                 <div class="form-group">
                     <label for="endDate">End Data:</label>
-                    <input type="date" th:field="*{endDateWork}" class="form-control" id="endDateWork"placeholder="Enter your end data">
-                    <span class="text-danger" th:if="${#fields.hasErrors('endDateWork')}" th:errors="*{endDateWork}"></span>
+                    <input type="date" th:field="*{endDateWork}" class="form-control" id="endDateWork"
+                           placeholder="Enter your end data">
+                    <span class="text-danger" th:if="${#fields.hasErrors('endDateWork')}"
+                          th:errors="*{endDateWork}"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea th:field="*{description}" class="form-control" id="description"placeholder="Describe yourself in a few words"></textarea>
-                    <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                    <textarea th:field="*{description}" class="form-control" id="description"
+                              placeholder="Describe yourself in a few words"></textarea>
+                    <span class="text-danger" th:if="${#fields.hasErrors('description')}"
+                          th:errors="*{description}"></span>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Skills:</label>
                             <div th:each="skill : ${skills}">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" th:id="${'skill_' + skill.id}" th:value="${skill.id}" th:field="*{skills}" />
-                                    <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
+                                    <input class="form-check-input" type="checkbox" th:id="${'skill_' + skill.id}"
+                                           th:value="${skill.id}" th:field="*{skills}"/>
+                                    <label class="form-check-label" th:for="${'skill_' + skill.id}"
+                                           th:text="${skill.name}"></label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Interest:</label>
-                    <div th:each="skill : ${skills}">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:id="${'interest_' + skill.id}" th:value="${skill.id}" th:field="*{interest}" />
-                            <label class="form-check-label" th:for="${'skill_' + skill.id}" th:text="${skill.name}"></label>
-
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Interest:</label>
+                            <div th:each="skill : ${skills}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:id="${'interest_' + skill.id}"
+                                           th:value="${skill.id}" th:field="*{interest}"/>
+                                    <label class="form-check-label" th:for="${'skill_' + skill.id}"
+                                           th:text="${skill.name}"></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -89,8 +89,9 @@ public class UserController {
 
     @GetMapping("/bySkill")
     public String getFilmsByGenre(@RequestParam("skill") List<Long> id, Model model) {
+        List<User> usersList = (List<User>) userRepository.findAll();
         model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("users", userService.getSortedList(id));
+        model.addAttribute("users", userService.getSortedList(id, usersList));
         return "sorted-users";
     }
 

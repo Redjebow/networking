@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Find friends</title>
+</head>
+<nav th:insert="~{fragments/navbar.html}"></nav>
+<body class="d-flex flex-column min-vh-100">
+<div class="col-8 container flex-grow-1 mt-7 mb-7">
+    <h1 th:text="${selectedEvent.topic}"></h1>
+    <form th:action="@{'/events/' + ${selectedEvent.id} + '/bySkill'}" method="post">
+        <select th:name="skill" multiple="multiple">
+            <option th:each="skill : ${skills}" th:value="${skill.id}" th:text="${skill.name}"></option>
+        </select>
+        <button type="submit" class="btn btn-success">Filter</button>
+    </form>
+    </hr>
+    <div class="row justify-content-center">
+        <table class="table table-hover">
+            <tr th:if="${#lists.isEmpty(users)}">
+                <td colspan="3">No users found.</td>
+            </tr>
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Skills</th>
+                <th scope="col">Interests</th>
+                <th scope="col">Action</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                <td>
+                    <ul>
+                        <li th:each="skill : ${user.skills}" th:text="${skill.name}"></li>
+                    </ul>
+                </td>
+                <td>
+                <ul>
+                    <li th:each="interest : ${user.interests}" th:text="${interest.name}"></li>
+                </ul>
+                </td>
+                <td><a th:href="@{'/users/' + ${user.id} + '/profile'}">
+                    <button type="submit" class="btn btn-success">Details</button></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+<div th:replace="~{fragments/footer.html}"></div>
+</html>

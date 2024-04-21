@@ -193,11 +193,9 @@ public class UserService {
         return "";  // TODO raise new error - pass it back to the frontend - no extension found...
     }
 
-    public List<User> getSortedList(List<Long> idList) {
+    public List<User> getSortedList(List<Long> idList, List<User> userList) {
         List<User> sortedUsers = new ArrayList<>();
-        List<User> usersList = (List<User>) userRepository.findAll();
-
-        for (User user : usersList) {
+        for (User user : userList) {
             boolean hasAllSkills = true;
 
             for (Long id : idList) {
@@ -209,7 +207,6 @@ public class UserService {
                         break;
                     }
                 }
-
                 if (!hasSkill) {
                     hasAllSkills = false;
                     break;

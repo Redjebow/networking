@@ -73,6 +73,15 @@
                                             <span th:text="${selectedEvent.duration}"></span> min
                                         </div>
                                     </div>
+                                    <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                                        <form method="get" th:action="@{'/events/' + ${selectedEvent.id} + '/users'}">
+                                            <button type="submit" class="btn btn-primary">Show All Users</button>
+                                        </form>
+                                        </br>
+                                    <form method="post" th:action="@{'/events/' + ${selectedEvent.id} + '/events'}">
+                                        <button type="submit" class="btn btn-primary">Apply</button>
+                                    </form>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>

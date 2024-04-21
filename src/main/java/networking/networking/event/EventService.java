@@ -1,20 +1,27 @@
 package networking.networking.event;
 
+import networking.networking.user.MyUserDetails;
+import networking.networking.user.User;
+import networking.networking.user.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
     }
 
     public String showAddEventForm(Model model) {

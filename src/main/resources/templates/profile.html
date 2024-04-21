@@ -8,22 +8,18 @@
     <title>User Profile</title>
 </head>
 <nav th:insert="~{fragments/navbar.html}"></nav>
-
-
 <body class="d-flex flex-column min-vh-100">
-
-<div class="container text-center flex-grow-1 mt-5">
+<br><br>
+<div class="container flex-grow-1">
     <h1>User Profile</h1>
-    <div class="row align-items-center">
-        <div class="col">
+    <div class="row">
+        <div class="col-12">
             <section class="user-profile section">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="sidebar">
-                                <!-- User Widget -->
                                 <div class="widget user">
-                                    <!-- User Image -->
                                     <div class="image d-flex justify-content-center">
 
                                         <img th:if="${not #strings.isEmpty(user.profilePicturePath)}"
@@ -35,51 +31,50 @@
                                              class="card-img-top img-fluid img-thumbnail"/>
 
                                     </div>
-                                    <!-- User Name -->
                                     <h5 class="text-center"
                                         th:text="${#authentication.getPrincipal().getFirstName()} + ' ' + ${#authentication.getPrincipal().getLastName()}"></h5>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6">
+                                <div>
                                     <div class="widget personal-info">
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Username: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Username: </label>
                                             <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">First Name: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">First Name: </label>
                                             <span th:text="${#authentication.getPrincipal().getFirstName()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Last Name: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Last Name: </label>
                                             <span th:text="${#authentication.getPrincipal().getLastName()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">E-mail: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">E-mail: </label>
                                             <span th:text="${#authentication.getPrincipal().getEmail()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Phone Number: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Phone Number: </label>
                                             <span th:text="${#authentication.getPrincipal().getPhoneNumber()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Description: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Description: </label>
                                             <span th:text="${#authentication.getPrincipal().getDescription()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Country: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Country: </label>
                                             <span th:text="${#authentication.getPrincipal().getCountry().name}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">City: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">City: </label>
                                             <span th:text="${#authentication.getPrincipal().getCity()}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Educations: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Educations: </label>
                                             <ul>
                                                 <li th:each="education : ${#authentication.getPrincipal().getEducations()}"
                                                     th:if="${education != null}"
@@ -87,7 +82,7 @@
                                             </ul>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 14px;">Work experiences: </label>
+                                            <label class="fw-bold" style="font-size: 20px;">Work experiences: </label>
                                             <ul>
                                                 <li th:each="workExperience : ${#authentication.getPrincipal().getWorkExperiences()}"
                                                     th:if="${workExperience != null}"

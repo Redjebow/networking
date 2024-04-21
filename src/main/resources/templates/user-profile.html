@@ -90,13 +90,19 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                    <form method="post" th:action="@{'/users/sendFriendRequest/' +  ${user.id}}">
+                    <span th:if="${friends != null}">
+                        <a th:href="@{'/users/chat/' + ${user.id}}">
+                        <button type="button" class="btn btn-primary">Send message</button>
+                        </a>
+                    </span>
+                    <span th:unless="${friends != null}">
+                    <form method="post" th:action="@{'/users/sendFriendRequest/' + ${user.id}}">
                         <button type="submit" class="btn btn-primary">Send friend request</button>
                     </form>
+                    </span>
                 </div>
                 <div th:if="${success}" class="alert alert-success">
                     <p th:text="${success}"></p>
@@ -104,7 +110,6 @@
                 <div th:if="${alreadySent}" class="alert alert-warning">
                     <p th:text="${alreadySent}"></p>
                 </div>
-
             </section>
         </div>
     </div>

@@ -223,6 +223,16 @@ public class UserService {
         return sortedUsers;
     }
 
+    public boolean isInFriendsList(User user, Set<User> friendsList){
+        Long userId = user.getId();
+        for(User u: friendsList){
+            if(Objects.equals(u.getId(), userId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String sendFriendRequest(Long id, Authentication authentication, RedirectAttributes redirectAttributes) {
         MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
         User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());

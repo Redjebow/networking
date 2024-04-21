@@ -159,7 +159,7 @@ public class UserController {
 
     @GetMapping("/chat/{id}")
     public String openChatForm(@PathVariable Long id, Authentication authentication){
-        return "";
+        return "message";
     }
 
 }

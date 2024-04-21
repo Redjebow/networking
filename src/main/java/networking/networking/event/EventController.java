@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +49,19 @@ public class EventController {
         return "events";
     }
     @PostMapping("/{id}/events")
-    public String addUserInEvent(@PathVariable Long id, Model model, Authentication authentication){
+    public String addUserInEvent(@PathVariable Long id, Model model, Authentication authentication, RedirectAttributes redirectAttributes){
         Event event = eventRepository.findById(id).orElseThrow();
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username);
-        event.getUsers().add(user);
         model.addAttribute("selectedEvent",event);
         model.addAttribute("users", event.getUsers());
+        if(eventService.isUserAlreadySubscribed(event, user)) {
+            redirectAttributes.addFlashAttribute("alreadySubscribed","You have already subscribed to this event!");
+            return "redirect:/events/"+id+"/events";
+        }
+        event.getUsers().add(user);
+        event.setCapacity(event.getCapacity() - 1);
         eventRepository.save(event);
         return "events";
     }

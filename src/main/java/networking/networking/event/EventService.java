@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class EventService {
@@ -52,6 +54,16 @@ public class EventService {
     public String showEventsSortedByDate(Model model){
         model.addAttribute("events", eventRepository.findAllByOrderByDateAsc());
         return "events-all";
+    }
+
+    public boolean isUserAlreadySubscribed(Event event, User user){
+        Set<User> users = event.getUsers();
+        for(User u : users){
+            if(Objects.equals(u.getId(), user.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

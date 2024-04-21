@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -90,7 +91,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile") // TODO - move ID after delete --> /delete/{id} + fix thymeleaf
-    public String getUserProfile(@PathVariable Long id, Model model) {
+    public String getUserProfile(@PathVariable Long id, Model model, Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = myUserDetails.getUser();
+        if(userRepository.findById(id).isPresent()) {
+            if (userService.isInFriendsList(userRepository.findById(id).get(), currentUser.getFriends()))
+                model.addAttribute("friends","Friends");
+        }
         model.addAttribute("user", userRepository.findById(id).orElseThrow());
         return "user-profile";
     }

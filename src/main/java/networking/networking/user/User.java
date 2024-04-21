@@ -52,7 +52,7 @@ public class User {
     @ManyToMany
     private Set<Skill> interests;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_friends",
             joinColumns = @JoinColumn(name = "user_id"),

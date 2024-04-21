@@ -54,11 +54,6 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <form class="d-flex" role="search" th:action="@{/products/search}">
-                    <input class="form-control me-2" type="search" placeholder="Find your interests.."
-                           aria-label="Search" name="searchString">
-                    <button class="btn btn-dark mр-3" type="submit" style="margin-right: 20px;">Search</button>
-                </form>
                 <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item dropdown">
                     <a class="nav-link" href="/login" role="button" aria-expanded="false">
                         Login

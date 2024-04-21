@@ -41,6 +41,9 @@
                     <form th:action="@{'/users/rejectNewFriend/' + ${request.getSender().getId()}}" method="post">
                         <button type="submit" class="btn btn-danger">Reject</button>
                     </form>
+                    <a th:href="@{/users/{id}/profile(id=${request.getSender().getId()})}">
+                        <button type="button" class="btn btn-primary">View profile</button>
+                    </a>
                 </td>
             </tr>
             </tbody>
@@ -68,7 +71,11 @@
                 <td>
                 <a th:href="@{'/users/chat/' + ${friend.getId()}}">
                     <button type="button" class="btn btn-primary">Start chat</button>
-                </a></td>
+                </a>
+                <a th:href="@{/users/{id}/profile(id=${friend.getId()})}">
+                    <button type="button" class="btn btn-primary">View profile</button>
+                </a>
+                </td>
             </tr>
             </tbody>
         </table>

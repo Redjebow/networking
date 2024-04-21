@@ -223,10 +223,22 @@ public class UserService {
         return sortedUsers;
     }
 
-    public boolean isInFriendsList(User user, Set<User> friendsList){
+    public boolean isInFriendsList(User user, Set<User> friendsList) {
         Long userId = user.getId();
-        for(User u: friendsList){
-            if(Objects.equals(u.getId(), userId)){
+        for (User u : friendsList) {
+            if (Objects.equals(u.getId(), userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasPendingFriendRequest(User currentUser, User requestSender) {
+        List<FriendRequest> friendRequests = friendRequestRepository.findAll();
+        for (FriendRequest f : friendRequests) {
+            if (f.getSender().equals(requestSender) &&
+                    f.getRecipient().equals(currentUser) &&
+                    f.getStatus().equals(RequestStatus.PENDING)) {
                 return true;
             }
         }

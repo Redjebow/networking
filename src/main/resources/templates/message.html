@@ -13,16 +13,51 @@
 <body class="d-flex flex-column min-vh-100">
 
 <div class="container text-center flex-grow-1 mt-5">
-    <h1>Message</h1>
+    <h1>Chat with <span th:text="${recipient.firstName + ' ' + recipient.lastName}">Recipient Name</span></h1>
     <div class="row align-items-center">
         <div class="col">
+            <div id="chat-messages" style="height: 300px; overflow-y: auto;">
+                <div th:each="message : ${messages}">
+                    <p>
+                        <span th:text="${#temporals.format(message.timestamp, 'dd-MM-yyyy HH:mm:ss')}"></span> -
+                        <span th:text="${message.sender.username}"></span>: <span th:text="${message.content}"></span>
+                    </p>
+                </div>
+            </div>
+            Recipient ID: <span th:text="${recipient.id}"></span>
+            <div class="input-group mt-3">
+                <input type="text" id="chat-input" class="form-control" placeholder="Type your message..." th:value="${messageContent}">
+                <div class="input-group-append">
+                    <form id="send-message-form" th:action="@{'/users/chat/' + ${recipient.id}}" method="post">
+
+                        <input type="hidden" name="msg" th:value="${messageContent}">
+                        <button type="submit" class="btn btn-primary" id="send-btn">Send</button>
+                    </form>
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
+
+
+
 <div th:replace="~{fragments/footer.html}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.getElementById('send-btn').addEventListener('click', function(event) {
+        event.preventDefault();
+        var messageContent = document.getElementById('chat-input').value; // Assuming 'chat-input' is where the message content is input
+        document.querySelector('input[name="msg"]').value = messageContent; // Set the value of the hidden input field
+        document.getElementById('send-message-form').submit();
+    });
+    /*]]>*/
+</script>
+
+
 </body>
 </html>

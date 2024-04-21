@@ -8,6 +8,8 @@ import networking.networking.enums.RequestStatus;
 import networking.networking.enums.SkillEnum;
 import networking.networking.friendRequest.FriendRequest;
 import networking.networking.friendRequest.FriendRequestRepository;
+import networking.networking.messages.Message;
+import networking.networking.messages.MessageRepository;
 import networking.networking.skill.SkillRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +38,7 @@ public class UserController {
     private final EducationRepository educationRepository;
     private final SkillRepository skillRepository;
     private final FriendRequestRepository friendRequestRepository;
+    private final MessageRepository messageRepository;
 
     @PostMapping("/upload")
     @ResponseBody
@@ -158,8 +162,32 @@ public class UserController {
     }
 
     @GetMapping("/chat/{id}")
-    public String openChatForm(@PathVariable Long id, Authentication authentication){
+    public String openChatForm(@PathVariable Long id, Authentication authentication, Model model){
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        User recipient = userRepository.findById(id).get();
+        List<Message> messages = messageRepository.findMessagesBetweenUsers(currentUser, recipient);
+        model.addAttribute("messages", messages);
+        model.addAttribute("recipient", recipient);
         return "message";
+    }
+
+    @PostMapping("/chat/{id}")
+    public String sendMessage(@PathVariable Long id,
+                              @RequestParam("msg") String msg,
+                              Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.getUserByUsername(myUserDetails.getUsername());
+        User recipient = userRepository.findById(id).get();
+
+        Message message = new Message();
+        message.setSender(currentUser);
+        message.setContent(msg);
+        message.setRecipient(recipient);
+        message.setTimestamp(LocalDateTime.now());
+
+        messageRepository.save(message);
+        return "redirect:/users/chat/" + id;
     }
 
 }

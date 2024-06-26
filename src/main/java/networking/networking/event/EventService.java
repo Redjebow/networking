@@ -53,5 +53,8 @@ public class EventService {
         model.addAttribute("events", eventRepository.findAllByOrderByDateAsc());
         return "events-all";
     }
+    public boolean checkForExistingCapacity(Event event){
+        return true;
+    }
 
 }
